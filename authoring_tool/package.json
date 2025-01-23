@@ -1,0 +1,19 @@
+{
+  "name": "authoring_tool",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:live": "TEST_ENV=live playwright test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@playwright/test": "^1.49.1",
+    "@types/node": "^22.10.7",
+    "dotenv": "^16.4.7",
+    "dotenv-expand": "^12.0.1"
+  }
+}
