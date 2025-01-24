@@ -15,8 +15,8 @@ services:
       BITNAMI_DEBUG: true
       PHP_POST_MAX_SIZE: 2048M
       PHP_UPLOAD_MAX_FILESIZE: 2048M
-      DECLARATIVE_SETUP_MANAGER_PASSWORD: ${_MANAGER_PW}
-      DECLARATIVE_SETUP_STUDENT_PASSWORD: ${_STUDENT_PW}
+      DECLARATIVE_SETUP_MANAGER_PASSWORD: ${_USER_MANAGER_PW}
+      DECLARATIVE_SETUP_STUDENT_PASSWORD: ${_USER_STUDENT_PW}
       ADLER_PLAYBOOK_ROLES: "test_users,integration_test"
     volumes:
       - moodle_moodle:/bitnami/moodle
@@ -24,6 +24,7 @@ services:
     depends_on:
       - db_moodle
     restart: unless-stopped
+    # todo: remove this healthcheck after next image release
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080"]
       start_period: 10m
@@ -65,7 +66,7 @@ services:
       timeout: 5s
 
   backend:
-    image: ghcr.io/projektadler/adlerbackend:2.4.0
+    image: ghcr.io/projektadler/adlerbackend:2.4.2-rc.3
     ports:
       - '${_PORT_BACKEND}:80'
     environment:
@@ -85,10 +86,6 @@ services:
     restart: unless-stopped
     extra_hosts:
       - ${_DOMAIN}:host-gateway
-    # TODO: backend does not have curl installed
-    # healthcheck:
-    #   test: ["CMD", "curl", "-f", "http://localhost/api/health"]
-    #   start_period: 30s
 
   frontend:
     image: ghcr.io/projektadler/2d_3d_adler:2.5.1
@@ -98,6 +95,7 @@ services:
       API_URL: 'http://${_URL_BACKEND}/api'
       MOODLE_URL: "http://${_URL_MOODLE}"
     restart: unless-stopped
+    # todo: remove this healthcheck after next image release
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost"]
       start_period: 30s

@@ -1,0 +1,18 @@
+import { test, expect } from '@playwright/test';
+
+test('test', async ({ page }) => {
+  await page.goto('http://localhost:8001/MyLearningWorldsOverview');
+  await page.getByRole('button', { name: 'Einloggen auf AdLer-Server' }).click();
+  await page.getByRole('textbox').first().click();
+  await page.getByRole('textbox').first().press('ControlOrMeta+a');
+  await page.getByRole('textbox').first().fill('http://localhost:26876/api');
+  await page.getByRole('textbox').nth(1).click();
+  await page.getByRole('textbox').nth(1).press('ControlOrMeta+a');
+  await page.getByRole('textbox').nth(1).fill('manager');
+  await page.locator('input[type="password"]').click();
+  await page.locator('input[type="password"]').fill('Manager1234!1234');
+  await page.getByRole('button', { name: 'Anmelden' }).click();
+  await expect(page.getByRole('dialog')).toContainText('Erfolgreich');
+});
+
+
