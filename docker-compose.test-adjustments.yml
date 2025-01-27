@@ -1,0 +1,7 @@
+services:
+  moodle:
+    image: ghcr.io/projektadler/adler-moodle:main-moodle-4.5
+    environment:
+      DECLERATIVE_SETUP_INTEGRATION_TEST_MANAGER_PASSWORD: ${_USER_MANAGER_PW}
+      DECLERATIVE_SETUP_INTEGRATION_TEST_STUDENT_PASSWORD: ${_USER_STUDENT_PW}
+      ADLER_PLAYBOOK_ROLES: "integration_test"
