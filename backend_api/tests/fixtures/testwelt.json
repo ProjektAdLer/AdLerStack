@@ -1,0 +1,64 @@
+{
+  "$type": "ATF",
+  "fileVersion": "2.3.0",
+  "amgVersion": "2.2.2",
+  "author": "",
+  "language": "de",
+  "world": {
+    "$type": "LearningWorld",
+    "evaluationLink": "",
+    "enrolmentKey": "",
+    "worldName": "testwelt",
+    "worldUUID": "fc2eb374-99e7-4bcb-b13c-859d82a5654b",
+    "worldDescription": "",
+    "worldGoals": [
+      ""
+    ],
+    "topics": [],
+    "spaces": [
+      {
+        "$type": "LearningSpace",
+        "spaceGoals": [],
+        "spaceStory": {
+          "$type": "SimpleSpaceStory",
+          "introStory": null,
+          "outroStory": null
+        },
+        "spaceName": "testraum",
+        "requiredPointsToComplete": 0,
+        "spaceId": 1,
+        "spaceUUID": "a3421d18-c206-43e3-bcea-ee96c43e2841",
+        "spaceDescription": "",
+        "spaceSlotContents": [
+          1,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "requiredSpacesToEnter": "",
+        "spaceTemplate": "R_20X20_6L",
+        "spaceTemplateStyle": "CampusAschaffenburg"
+      }
+    ],
+    "elements": [
+      {
+        "$type": "LearningElement",
+        "elementDescription": "",
+        "elementGoals": [
+          ""
+        ],
+        "elementMaxScore": 1,
+        "elementModel": "l_random",
+        "learningSpaceParentId": 1,
+        "url": "",
+        "elementId": 1,
+        "elementUUID": "f734f354-6b0a-4102-a19d-57ab6f151146",
+        "elementName": "test_LE",
+        "elementCategory": "text",
+        "elementFileType": "txt"
+      }
+    ]
+  }
+}
