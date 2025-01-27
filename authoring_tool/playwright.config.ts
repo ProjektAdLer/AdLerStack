@@ -22,14 +22,13 @@ export default defineConfig({
   retries: 0,
   maxFailures: 1,
 
+  /* Authoring tool tests are not allowed to run in parallel */
+  fullyParallel: false,
+  workers: 1,
 
   testDir: './tests',
-  /* Run tests in files in parallel */
-  fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
-  /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
