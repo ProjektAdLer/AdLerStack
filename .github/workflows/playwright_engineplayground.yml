@@ -8,6 +8,11 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    services:
+      app:
+        image: ghcr.io/projektadler/2d_3d_adler:e2ev1
+        ports:
+          - 3000:80 
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
