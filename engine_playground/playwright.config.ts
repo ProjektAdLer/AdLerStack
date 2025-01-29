@@ -1,14 +1,13 @@
-import { defineConfig, devices } from '@playwright/test';
-import dotenv from 'dotenv';
-import dotenvExpand from 'dotenv-expand';
-import path from 'path';
-
+import { defineConfig, devices } from "@playwright/test";
+import dotenv from "dotenv";
+import dotenvExpand from "dotenv-expand";
+import path from "path";
 
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-const myEnv = dotenv.config({ path: path.resolve(__dirname, '../.env') });
+const myEnv = dotenv.config({ path: path.resolve(__dirname, "../.env") });
 dotenvExpand.expand(myEnv);
 
 /**
@@ -16,9 +15,9 @@ dotenvExpand.expand(myEnv);
  */
 export default defineConfig({
   /* allows to only run tests marked as safe */
-  grep: process.env.TEST_ENV === 'live' ? /@safe/ : /.*/,
+  grep: process.env.TEST_ENV === "live" ? /@safe/ : /.*/,
 
-  testDir: './tests',
+  testDir: "./tests",
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -28,7 +27,7 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: "html",
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
@@ -36,17 +35,25 @@ export default defineConfig({
     baseURL: "http://localhost:3000",
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on',
-    video: 'on'
+    trace: "on",
+    video: "on",
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'], launchOptions: {
-        args: ['--enable-gpu']
-      } },
+      name: "chromium",
+      use: {
+        ...devices["Desktop Chrome"],
+        launchOptions: {
+          args: [
+            "--enable-gpu",
+            "--use-gl=egl",
+            "--ignore-gpu-blocklist",
+            "--use-gl=angle",
+          ],
+        },
+      },
     },
 
     // {
@@ -58,5 +65,5 @@ export default defineConfig({
     //   name: 'webkit',
     //   use: { ...devices['Desktop Safari'] },
     // }
-  ]
+  ],
 });
