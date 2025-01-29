@@ -25,7 +25,7 @@ jobs:
       working-directory: ./engine_playground
       run: npx playwright install --with-deps
     - name: Run Playwright tests
-      uses: coactions/setup-xvfb@v1
+      uses: GabrielBB/xvfb-action@v1
       with:
         run: npx playwright test
         working-directory: ./engine_playground
