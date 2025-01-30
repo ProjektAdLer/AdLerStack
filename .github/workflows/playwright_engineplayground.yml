@@ -8,6 +8,9 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.50.0-noble
+      options: --user 1001
     services:
       app:
         image: ghcr.io/projektadler/2d_3d_adler:e2ev1
