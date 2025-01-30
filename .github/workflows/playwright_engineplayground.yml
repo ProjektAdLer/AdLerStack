@@ -5,7 +5,7 @@ on:
   pull_request:
     branches: [ main, master ]
 jobs:
-  test:
+  playwright:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     services:
@@ -25,10 +25,8 @@ jobs:
       working-directory: ./engine_playground
       run: npx playwright install --with-deps
     - name: Run Playwright tests
-      uses: GabrielBB/xvfb-action@v1
-      with:
-        run: npx playwright test
-        working-directory: ./engine_playground
+      run: xvfb-run npx playwright test
+      working-directory: ./engine_playground
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
