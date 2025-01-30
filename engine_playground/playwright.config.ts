@@ -49,6 +49,8 @@ export default defineConfig({
           args: [
             "--enable-gpu",
             "--use-gl=egl",
+            "--enable-gpu-logging",
+            "--enable-gpu-benchmarking",
             "--ignore-gpu-blocklist",
             "--use-gl=angle",
           ],
