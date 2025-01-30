@@ -1,17 +1,13 @@
 name: Playwright Tests
 on:
   push:
-    branches: [ main, master, philipps_spielplatz ]
+    branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
 jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.50.0-noble
-      options: --user 1001
-      network: services
     services:
       app:
         image: ghcr.io/projektadler/2d_3d_adler:e2ev1
@@ -22,25 +18,20 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version: lts/*
-    - name: Debug connection
-      run: curl -v http://app:80
     - name: Install dependencies
       working-directory: ./engine_playground
       run: npm ci
-    - name: Run Playwright tests
+    - name: Install Playwright Browsers
       working-directory: ./engine_playground
-      run: npx playwright test
-    # - name: Install Playwright Browsers
-    #   working-directory: ./engine_playground
-    #   run: npx playwright install --with-deps
-    # - name: Run Playwright tests
-    #   uses: GabrielBB/xvfb-action@v1
-    #   with:
-    #     run: npx playwright test
-    #     working-directory: ./engine_playground
-    # - uses: actions/upload-artifact@v4
-    #   if: ${{ !cancelled() }}
-    #   with:
-    #     name: playwright-report
-    #     path: engine_playground/playwright-report/
-    #     retention-days: 30
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      uses: GabrielBB/xvfb-action@v1
+      with:
+        run: npx playwright test
+        working-directory: ./engine_playground
+    - uses: actions/upload-artifact@v4
+      if: ${{ !cancelled() }}
+      with:
+        name: playwright-report
+        path: engine_playground/playwright-report/
+        retention-days: 30
