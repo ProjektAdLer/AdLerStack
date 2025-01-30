@@ -11,6 +11,7 @@ jobs:
     container:
       image: mcr.microsoft.com/playwright:v1.50.0-noble
       options: --user 1001
+      network: services
     services:
       app:
         image: ghcr.io/projektadler/2d_3d_adler:e2ev1
