@@ -36,7 +36,7 @@ test("Test 3D Acceleration", async ({ page, playwright, context }) => {
       },
     });
     await page.waitForTimeout(5000);
-    await page.screenshot({ path: `example-${browserType.name()}.png` });
+    // await page.screenshot({ path: `example-${browserType.name()}.png` });
     // await page.goto("https://webglsamples.org/aquarium/aquarium.html");
     // await page.waitForTimeout(1000);
     // await page.screenshot({ path: `example-${browserType.name()}.png` });
