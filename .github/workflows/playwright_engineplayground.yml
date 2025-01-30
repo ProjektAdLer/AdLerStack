@@ -25,7 +25,7 @@ jobs:
       working-directory: ./engine_playground
       run: npx playwright install --with-deps
     - name: Run Playwright tests
-      run: xvfb-run npx playwright test
+      run: xvfb-run --server-args="-screen 0 1024x768x24" npm run test --headed
       working-directory: ./engine_playground
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}

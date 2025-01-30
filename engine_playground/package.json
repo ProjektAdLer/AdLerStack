@@ -1,7 +1,7 @@
 {
     "name": "engine_playground",
     "scripts": {
-      "test": "playwright test",
+      "test": "playwright test --headed",
       "test:live": "TEST_ENV=live playwright test"
     },
     "devDependencies": {
