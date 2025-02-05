@@ -1,0 +1,7 @@
+{
+    "compilerOptions": {
+      "paths": {
+        "#common/*": ["../libs/common-test-code/*"]
+      }
+    }
+  }
