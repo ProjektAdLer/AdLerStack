@@ -1,6 +1,6 @@
 import { test as base, expect } from '@playwright/test';
-import path from 'path';
-import fs from 'fs';
+import * as path from 'path';
+import {readFileSync} from 'fs';
 import { enrollInMoodleCourse } from '#common/moodle_helpers';
 
 
@@ -81,12 +81,12 @@ test.describe.serial('World lifecycle', () => {
                 backupFile: {
                     name: 'testwelt.mbz',
                     mimeType: 'application/octet-stream',
-                    buffer: fs.readFileSync(path.join(__dirname, 'fixtures', 'testwelt.mbz'))
+                    buffer: readFileSync(path.join(__dirname, 'fixtures', 'testwelt.mbz'))
                 },
                 atfFile: {
                     name: 'testwelt.awf',
                     mimeType: 'application/json',
-                    buffer: fs.readFileSync(path.join(__dirname, 'fixtures', 'testwelt.json'))
+                    buffer: readFileSync(path.join(__dirname, 'fixtures', 'testwelt.json'))
                 }
             }
         });
@@ -135,12 +135,12 @@ test.describe.serial('Student access workflow', () => {
                 backupFile: {
                     name: 'testwelt.mbz',
                     mimeType: 'application/octet-stream',
-                    buffer: fs.readFileSync(path.join(__dirname, 'fixtures', 'testwelt.mbz'))
+                    buffer: readFileSync(path.join(__dirname, 'fixtures', 'testwelt.mbz'))
                 },
                 atfFile: {
                     name: 'testwelt.awf',
                     mimeType: 'application/json',
-                    buffer: fs.readFileSync(path.join(__dirname, 'fixtures', 'testwelt.json'))
+                    buffer: readFileSync(path.join(__dirname, 'fixtures', 'testwelt.json'))
                 }
             }
         });
@@ -209,12 +209,12 @@ test.describe('Student unauthorized actions', () => {
                 backupFile: {
                     name: 'testwelt.mbz',
                     mimeType: 'application/octet-stream',
-                    buffer: fs.readFileSync(path.join(__dirname, 'fixtures', 'testwelt.mbz'))
+                    buffer: readFileSync(path.join(__dirname, 'fixtures', 'testwelt.mbz'))
                 },
                 atfFile: {
                     name: 'testwelt.awf',
                     mimeType: 'application/json',
-                    buffer: fs.readFileSync(path.join(__dirname, 'fixtures', 'testwelt.json'))
+                    buffer: readFileSync(path.join(__dirname, 'fixtures', 'testwelt.json'))
                 }
             }
         });
