@@ -1,14 +1,14 @@
 import test from "@playwright/test";
 
 test('test', async ({ page }) => {
-    await page.goto('http://localhost:3000/');
+    await page.goto('/');
     await page.getByTestId('loginButton').click();
     await page.getByRole('button', { name: 'Zum Lernwelt-Menü' }).click();
     await page.getByRole('button', { name: 'New World' }).click();
     await page.getByRole('button', { name: 'Lernwelt öffnen!' }).click();
     await page.getByTestId('rf__node-1').getByRole('button', { name: 'Lernraum Bilder' }).click();
     await page.getByRole('button', { name: 'Lernraum betreten!' }).click();
-    await page.waitForSelector('button:has-text("Weiter zum Lernraum")', { timeout: 12000 });
+    // await page.waitForSelector('button:has-text("Weiter zum Lernraum")', { timeout: 12000 });
     await page.getByRole('button', { name: 'Weiter zum Lernraum' }).click();
     await page.locator('canvas').click({
       position: {
