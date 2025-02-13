@@ -1,7 +1,7 @@
 name: Playwright Tests
 on:
   push:
-    branches: [ markus/webgl ]
+
 jobs:
   test-playwright:
     timeout-minutes: 60
