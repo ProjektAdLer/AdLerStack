@@ -13,4 +13,4 @@ services:
       args:
         VERSION: 2.2.2
     ports:
-      - "${PORT_AUTHORING_TOOL:-8001}:8001"
+      - "${_PORT_AUTHORING_TOOL:-8001}:8002"

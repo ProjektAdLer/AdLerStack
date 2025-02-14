@@ -3,7 +3,7 @@ FROM ubuntu:24.04
 ARG VERSION
 
 RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt install -y wget xvfb libgtk-3-0 libnss3 libasound2t64 ca-certificates --no-install-recommends && \
+    DEBIAN_FRONTEND=noninteractive apt install -y socat wget xvfb libgtk-3-0 libnss3 libasound2t64 ca-certificates --no-install-recommends && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -15,6 +15,6 @@ RUN wget -O authoring-tool.AppImage \
     mv squashfs-root/* . && \
     rm -rf squashfs-root authoring-tool.AppImage
 
-EXPOSE 8001
+EXPOSE 8002
 
-CMD ["xvfb-run", "./authoring-tool", "--no-sandbox"]
+CMD ["sh", "-c", "xvfb-run ./authoring-tool --no-sandbox & socat TCP-LISTEN:8001,fork TCP:127.0.0.1:8001"]
