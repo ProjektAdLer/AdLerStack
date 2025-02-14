@@ -17,4 +17,6 @@ RUN wget -O authoring-tool.AppImage \
 
 EXPOSE 8002
 
-CMD ["sh", "-c", "xvfb-run ./authoring-tool --no-sandbox & socat TCP-LISTEN:8001,fork TCP:127.0.0.1:8001"]
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 CMD curl -f http://localhost:8001 || exit 1
+
+CMD ["sh", "-c", "xvfb-run ./authoring-tool --no-sandbox & socat TCP-LISTEN:8002,fork TCP:127.0.0.1:8001"]

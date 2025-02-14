@@ -14,3 +14,5 @@ services:
         VERSION: 2.2.2
     ports:
       - "${_PORT_AUTHORING_TOOL:-8001}:8002"
+    extra_hosts:
+      - ${_DOMAIN}:host-gateway
