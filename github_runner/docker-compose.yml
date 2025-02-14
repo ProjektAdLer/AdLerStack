@@ -1,0 +1,69 @@
+name: github-runner
+services:
+  dind:
+    image: docker:dind
+    privileged: true
+    environment:
+      DOCKER_TLS_CERTDIR: ""  # Disable TLS
+    healthcheck:  # <-- Added healthcheck
+      test: ["CMD", "docker", "info"]
+      interval: 5s
+      timeout: 10s
+      start_period: 10s
+      retries: 10
+    restart: unless-stopped
+
+  worker:
+    image: myoung34/github-runner:ubuntu-noble
+    profiles: [ managed-by-watchdog ]  # this avoids automatic start with docker compose up
+    depends_on:
+      dind:
+        condition: service_healthy
+    restart: no  # doing with watchdog as restart does not do a clean restart
+    environment:
+      EPHEMERAL: 1
+      ORG_NAME: ProjektAdLer
+      RUNNER_NAME: debian-adler-docker
+      RUNNER_TOKEN: ${RUNNER_TOKEN:-"some pointless dummy text to avoid docker compose warnings"} # set through watchdog
+#      RUNNER_WORKDIR: /tmp/runner/work
+#      CONFIGURED_ACTIONS_RUNNER_FILES_DIR: /runner/data
+      RUNNER_SCOPE: 'org'
+      LABELS: linux,x64,ubuntu-24.04,self-hosted
+      DOCKER_HOST: tcp://dind:2375
+      DOCKER_TLS_CERTDIR: ""
+#    deploy:
+#      resources:
+#        reservations:
+#          devices:
+#            - driver: nvidia
+#              count: all
+#              capabilities: [gpu]
+#    volumes:
+#      - runner-data:/runner/data
+#      - /dev/dri:/dev/dri
+
+  watchdog:
+    image: docker:cli
+    depends_on:
+      - dind
+    restart: unless-stopped
+    environment:
+      GH_PAT: ${GITHUB_ACCESS_TOKEN}
+      ORG_NAME: ProjektAdLer
+    command: |
+      sh -c "trap 'docker compose stop worker; exit 0' TERM INT  # this will stop the worker when the watchdog is stopped, making the worker to also stop when running docker compose down
+      cd /workdir
+      apk add --no-cache curl jq
+      while true; do
+        if [ -z \"\$(docker compose ps worker -aq --status running)\" ]; then
+          REGISTRATION_TOKEN=$(curl -sX POST -H \"Authorization: token $$GH_PAT\" \"https://api.github.com/orgs/$$ORG_NAME/actions/runners/registration-token\" | jq -r '.token')
+          RUNNER_TOKEN=$$REGISTRATION_TOKEN docker compose up -d --force-recreate worker
+        fi
+        sleep 5
+      done"
+    volumes:
+      - .:/workdir  # needed to be able to use docker compose in container
+      - /var/run/docker.sock:/var/run/docker.sock  # Needed for controlling Docker
+
+#volumes:
+#  runner-data:

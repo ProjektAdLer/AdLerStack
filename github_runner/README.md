@@ -3,4 +3,4 @@ Provide a [personal access token]() through the env variable `GITHUB_ACCESS_TOKE
 
 Using [service containers](https://docs.github.com/de/actions/use-cases-and-examples/using-containerized-services/about-service-containers) is possible, but they can not be accessed like on the shared runners. Expose a port on the service container (eg `3001:80`) and access it via `dind:3001` in the job steps. Same for `docker` and `docker-compose` services.
 
-To start the runner, run `docker-compose up -d`. To stop the runner, run `docker-compose down`. This will only run one runner. To run multiple runners, multiple docker-composes have to be started (potentially possible like this: `ocker compose -f docker-compose.yml --project-name my_project1 up -d`). Using multiple workers and sharing one dind container could cause side effects (like conflicting ports of multiple parallel running jobs).
+To start the runner, run `docker-compose up -d`. To stop the runner, run `docker-compose down`. This will only run one runner. To run multiple runners, multiple docker-composes have to be started with different names.
