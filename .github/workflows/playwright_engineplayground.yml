@@ -11,6 +11,7 @@ jobs:
       _DOMAIN: "dind"
 
     strategy:
+      fail-fast: false
       matrix:
         include:
           - project: authoring_tool
