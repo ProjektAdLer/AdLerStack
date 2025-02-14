@@ -1,0 +1,20 @@
+FROM ubuntu:24.04
+
+ARG VERSION
+
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt install -y wget xvfb libgtk-3-0 libnss3 libasound2t64 ca-certificates --no-install-recommends && \
+    rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+RUN wget -O authoring-tool.AppImage \
+    "https://packages.projekt-adler.eu/packages/authoring-tool/${VERSION}-linux.AppImage" && \
+    chmod +x authoring-tool.AppImage && \
+    ./authoring-tool.AppImage --appimage-extract && \
+    mv squashfs-root/* . && \
+    rm -rf squashfs-root authoring-tool.AppImage
+
+EXPOSE 8001
+
+CMD ["xvfb-run", "./authoring-tool", "--no-sandbox"]
