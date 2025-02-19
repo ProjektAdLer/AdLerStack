@@ -1,5 +1,4 @@
-// import { APIRequestContext, expect } from '@playwright/test';
-// i think this is a quite ugly solution, but it is a working solution
+import { APIRequestContext, expect } from '@playwright/test';
 
 export async function enrollInMoodleCourse(
     request: APIRequestContext,

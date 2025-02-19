@@ -1,7 +1,7 @@
 import { test as base, expect } from '@playwright/test';
 import * as path from 'path';
 import {readFileSync} from 'fs';
-import { enrollInMoodleCourse } from '#common/moodle_helpers';
+import {enrollInMoodleCourse} from "./libs/moodle_helpers";
 
 
 type AuthData = {
