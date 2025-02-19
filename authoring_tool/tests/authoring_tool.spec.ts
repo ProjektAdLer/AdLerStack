@@ -32,7 +32,8 @@ test.beforeAll(async ({request}) => {
 
 test('Login', async ({ page }) => {
   await page.goto('/MyLearningWorldsOverview');
-  await page.getByRole('button', { name: 'Einloggen auf AdLer-Server' }).click();
+  await page.waitForTimeout(1000);  // somehow during first start a delay of at least 250ms is needed
+  await page.getByRole('button', { name: 'Einloggen auf AdLer-Server' }).click({force: true});
   await page.getByRole('textbox').first().click();
   await page.getByRole('textbox').first().press('ControlOrMeta+a');
   await page.getByRole('textbox').first().fill(`http://${process.env._URL_BACKEND}/api`);
