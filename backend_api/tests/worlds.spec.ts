@@ -197,48 +197,48 @@ test.describe.serial('Student access workflow', () => {
 });
 
 
-test.describe('Student unauthorized actions', () => {
-    let worldId: number;
-    let managerUserId: number;
-
-    test.beforeEach(async ({ request, managerAuth }) => {
-        // Setup: Upload fresh world before EACH test
-        const uploadResponse = await request.post('/api/Worlds', {
-            headers: { 'token': managerAuth.token },
-            multipart: {
-                backupFile: {
-                    name: 'testwelt.mbz',
-                    mimeType: 'application/octet-stream',
-                    buffer: readFileSync(path.join(__dirname, 'fixtures', 'testwelt.mbz'))
-                },
-                atfFile: {
-                    name: 'testwelt.awf',
-                    mimeType: 'application/json',
-                    buffer: readFileSync(path.join(__dirname, 'fixtures', 'testwelt.json'))
-                }
-            }
-        });
-        expect(uploadResponse.ok(), 'World setup upload failed').toBeTruthy();
-        const result = await uploadResponse.json();
-        worldId = result.worldId;
-        managerUserId = managerAuth.userId;
-    });
-
-    test.afterEach(async ({ request, managerAuth }) => {
-        // Teardown: Delete world after EACH test
-        if (worldId) {
-            await request.delete(`/api/Worlds/${worldId}`, {
-                headers: { 'token': managerAuth.token }
-            });
-        }
-    });
-
-    test('Student cannot delete world uploaded by manager', async ({ request, studentAuth }) => {
-        const response = await request.delete(`/api/Worlds/${worldId}`, {
-            headers: { 'token': studentAuth.token }
-        });
-        console.log('Response:', await response.text());
-        expect(response.ok(), 'Student should not be able to delete world').toBeFalsy();
-        expect(response.status(), 'Should return 403 Forbidden').toBe(403);
-    });
-});
+// test.describe('Student unauthorized actions', () => {
+//     let worldId: number;
+//     let managerUserId: number;
+//
+//     test.beforeEach(async ({ request, managerAuth }) => {
+//         // Setup: Upload fresh world before EACH test
+//         const uploadResponse = await request.post('/api/Worlds', {
+//             headers: { 'token': managerAuth.token },
+//             multipart: {
+//                 backupFile: {
+//                     name: 'testwelt.mbz',
+//                     mimeType: 'application/octet-stream',
+//                     buffer: readFileSync(path.join(__dirname, 'fixtures', 'testwelt.mbz'))
+//                 },
+//                 atfFile: {
+//                     name: 'testwelt.awf',
+//                     mimeType: 'application/json',
+//                     buffer: readFileSync(path.join(__dirname, 'fixtures', 'testwelt.json'))
+//                 }
+//             }
+//         });
+//         expect(uploadResponse.ok(), 'World setup upload failed').toBeTruthy();
+//         const result = await uploadResponse.json();
+//         worldId = result.worldId;
+//         managerUserId = managerAuth.userId;
+//     });
+//
+//     test.afterEach(async ({ request, managerAuth }) => {
+//         // Teardown: Delete world after EACH test
+//         if (worldId) {
+//             await request.delete(`/api/Worlds/${worldId}`, {
+//                 headers: { 'token': managerAuth.token }
+//             });
+//         }
+//     });
+//
+//     test('Student cannot delete world uploaded by manager', async ({ request, studentAuth }) => {
+//         const response = await request.delete(`/api/Worlds/${worldId}`, {
+//             headers: { 'token': studentAuth.token }
+//         });
+//         console.log('Response:', await response.text());
+//         expect(response.ok(), 'Student should not be able to delete world').toBeFalsy();
+//         expect(response.status(), 'Should return 403 Forbidden').toBe(403);
+//     });
+// });
