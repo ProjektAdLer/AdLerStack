@@ -1,3 +1,5 @@
+name: adler_e2e_tests  # this name is referenced in some tests (temporary workaround) so it is not allowed to change
+
 services:
   moodle:
     image: ghcr.io/projektadler/adler-moodle:main-moodle-4.5

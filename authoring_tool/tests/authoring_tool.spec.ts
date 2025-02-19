@@ -1,9 +1,16 @@
 import { test, expect } from '@playwright/test';
+import { execSync } from 'child_process';
+import * as path from 'path';
 
 let apiToken: string;
 let userId: number;
 
-test.beforeAll(async ({request}) => {
+test.beforeAll(async ({ request }) => {
+  // Copy and extract fixture data to authoring tool container
+  const fixturesPath = path.resolve(__dirname, 'fixtures/AdLerAuthoring.tar.gz');
+  execSync(`docker cp "${fixturesPath}" adler_e2e_tests-authoring-tool-1:/tmp/AdLerAuthoring.tar.gz`);
+  execSync(`docker exec adler_e2e_tests-authoring-tool-1 sh -c "mkdir -p /root/.config && tar -xzf /tmp/AdLerAuthoring.tar.gz -C /root/.config"`);
+
   // Get token
   const loginResponse = await request.get(`http://${process.env._URL_BACKEND}/api/Users/Login`, {
     params: {
@@ -24,7 +31,7 @@ test.beforeAll(async ({request}) => {
     }
   });
   if (!userResponse.ok()) throw new Error(`User details failed with status ${userResponse.status()}`);
-  
+
   const userData = await userResponse.json();
   if (typeof userData.userId !== 'number') throw new Error('Invalid user ID in response');
   userId = userData.userId;
