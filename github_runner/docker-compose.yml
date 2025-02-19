@@ -1,4 +1,4 @@
-name: github-runner
+name: github-runner  # default if not overwritten with COMPOSE_PROJECT_NAME env variable
 services:
   dind:
     image: docker:dind
@@ -23,24 +23,12 @@ services:
     environment:
       EPHEMERAL: 1
       ORG_NAME: ProjektAdLer
-      RUNNER_NAME: debian-adler-docker
+      RUNNER_NAME: debian-adler-docker-${COMPOSE_PROJECT_NAME}
       RUNNER_TOKEN: ${RUNNER_TOKEN:-"some pointless dummy text to avoid docker compose warnings"} # set through watchdog
-#      RUNNER_WORKDIR: /tmp/runner/work
-#      CONFIGURED_ACTIONS_RUNNER_FILES_DIR: /runner/data
       RUNNER_SCOPE: 'org'
       LABELS: linux,x64,ubuntu-24.04,self-hosted
       DOCKER_HOST: tcp://dind:2375
       DOCKER_TLS_CERTDIR: ""
-#    deploy:
-#      resources:
-#        reservations:
-#          devices:
-#            - driver: nvidia
-#              count: all
-#              capabilities: [gpu]
-#    volumes:
-#      - runner-data:/runner/data
-#      - /dev/dri:/dev/dri
 
   watchdog:
     image: docker:cli
@@ -50,12 +38,19 @@ services:
     environment:
       GH_PAT: ${GITHUB_ACCESS_TOKEN}
       ORG_NAME: ProjektAdLer
+      COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
     command: |
       sh -c "trap 'docker compose stop worker; exit 0' TERM INT  # this will stop the worker when the watchdog is stopped, making the worker to also stop when running docker compose down
       cd /workdir
       apk add --no-cache curl jq
       while true; do
         if [ -z \"\$(docker compose ps worker -aq --status running)\" ]; then
+          # Stop all containers on dind
+          docker -H tcp://dind:2375 ps -aq | xargs -r docker -H tcp://dind:2375 stop
+          # Remove all containers on dind
+          docker -H tcp://dind:2375 ps -aq | xargs -r docker -H tcp://dind:2375 rm
+
+          # Start the runner
           REGISTRATION_TOKEN=$(curl -sX POST -H \"Authorization: token $$GH_PAT\" \"https://api.github.com/orgs/$$ORG_NAME/actions/runners/registration-token\" | jq -r '.token')
           RUNNER_TOKEN=$$REGISTRATION_TOKEN docker compose up -d --force-recreate worker
         fi
@@ -64,6 +59,3 @@ services:
     volumes:
       - .:/workdir  # needed to be able to use docker compose in container
       - /var/run/docker.sock:/var/run/docker.sock  # Needed for controlling Docker
-
-#volumes:
-#  runner-data:

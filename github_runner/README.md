@@ -3,4 +3,8 @@ Provide a [personal access token]() through the env variable `GITHUB_ACCESS_TOKE
 
 Using [service containers](https://docs.github.com/de/actions/use-cases-and-examples/using-containerized-services/about-service-containers) is possible, but they can not be accessed like on the shared runners. Expose a port on the service container (eg `3001:80`) and access it via `dind:3001` in the job steps. Same for `docker` and `docker-compose` services.
 
-To start the runner, run `docker-compose up -d`. To stop the runner, run `docker-compose down`. This will only run one runner. To run multiple runners, multiple docker-composes have to be started with different names.
+To start the runner, run `docker-compose up -d`. To stop the runner, run `docker-compose down`. This will only run one runner. To run multiple runners start the compose with different project names
+- defined by the `GITHUB_RUNNER_NAME` env variable, or
+- by having multiple `docker-compose.yml` files with different project names.
+
+**Do not** use the -p/--project-name flag!
