@@ -95,6 +95,9 @@ test('List and delete world', async ({ page, request }) => {
   //   page.getByRole('dialog').getByText('testwelt')
   // ).toBeHidden({ timeout: 10000 });
 
+  // work around for complicated check (as no labels are provided by the application)
+  await page.waitForTimeout(2000);  // a minimum of 500ms delay is needed
+
   // Verify final state
   const finalResponse = await request.get(`http://${process.env._URL_BACKEND}/api/Worlds/author/${userId}`, {
     headers: {
