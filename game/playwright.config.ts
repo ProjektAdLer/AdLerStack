@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
-import dotenv from 'dotenv';
-import dotenvExpand from 'dotenv-expand';
-import path from 'path';
+import * as dotenv from 'dotenv';
+import * as dotenvExpand from 'dotenv-expand';
+import * as path from 'path';
 
 
 /**
