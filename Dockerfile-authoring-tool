@@ -3,7 +3,7 @@ FROM ubuntu:24.04
 ARG VERSION
 
 RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt install -y socat wget xvfb libgtk-3-0 libnss3 libasound2t64 ca-certificates --no-install-recommends && \
+    DEBIAN_FRONTEND=noninteractive apt install -y socat wget curl xvfb libgtk-3-0 libnss3 libasound2t64 ca-certificates --no-install-recommends && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -17,6 +17,6 @@ RUN wget -O authoring-tool.AppImage \
 
 EXPOSE 8002
 
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 CMD curl -f http://localhost:8001 || exit 1
+HEALTHCHECK --interval=5s --timeout=3s --start-period=30s --retries=3 CMD curl -f http://localhost:8001 || exit 1
 
 CMD ["sh", "-c", "xvfb-run ./authoring-tool --no-sandbox & socat TCP-LISTEN:8002,fork TCP:127.0.0.1:8001"]
