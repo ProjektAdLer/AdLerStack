@@ -1,18 +1,16 @@
-import { test as base, expect } from '@playwright/test';
+import {expect} from '@playwright/test';
 import * as path from 'path';
 import {readFileSync} from 'fs';
 import {test} from "./libs/testcase_with_credentials";
-
-
 
 
 test.describe.serial('World lifecycle', () => {
     let initialWorldCount: number;
     let uploadedWorldId: number;
 
-    test('Get initial world count', async ({ request, managerAuth }) => {
+    test('Get initial world count', async ({request, managerAuth}) => {
         const response = await request.get(`/api/Worlds/author/${managerAuth.userId}`, {
-            headers: { 'token': managerAuth.token }
+            headers: {'token': managerAuth.token}
         });
         expect(response.ok(), 'Failed to get initial world list').toBeTruthy();
         const worlds = (await response.json()).worlds;
@@ -20,9 +18,9 @@ test.describe.serial('World lifecycle', () => {
         initialWorldCount = worlds.length;
     });
 
-    test('Upload world', async ({ request, managerAuth }) => {
+    test('Upload world', async ({request, managerAuth}) => {
         const response = await request.post(`/api/Worlds`, {
-            headers: { 'token': managerAuth.token },
+            headers: {'token': managerAuth.token},
             multipart: {
                 backupFile: {
                     name: 'testwelt.mbz',
@@ -42,9 +40,9 @@ test.describe.serial('World lifecycle', () => {
         expect(uploadedWorldId, 'No world ID returned after upload').toBeTruthy();
     });
 
-    test('Verify world in list', async ({ request, managerAuth }) => {
+    test('Verify world in list', async ({request, managerAuth}) => {
         const response = await request.get(`/api/Worlds/author/${managerAuth.userId}`, {
-            headers: { 'token': managerAuth.token }
+            headers: {'token': managerAuth.token}
         });
         expect(response.ok(), 'Failed to get world list after upload').toBeTruthy();
         const worlds = (await response.json()).worlds;
@@ -52,16 +50,16 @@ test.describe.serial('World lifecycle', () => {
         expect(worlds.some(w => w.worldId === uploadedWorldId), 'Uploaded world not found in list').toBeTruthy();
     });
 
-    test('Delete world', async ({ request, managerAuth }) => {
+    test('Delete world', async ({request, managerAuth}) => {
         const response = await request.delete(`/api/Worlds/${uploadedWorldId}`, {
-            headers: { 'token': managerAuth.token }
+            headers: {'token': managerAuth.token}
         });
         expect(response.ok(), 'World deletion request failed').toBeTruthy();
     });
 
-    test('Verify world deleted', async ({ request, managerAuth }) => {
+    test('Verify world deleted', async ({request, managerAuth}) => {
         const response = await request.get(`/api/Worlds/author/${managerAuth.userId}`, {
-            headers: { 'token': managerAuth.token }
+            headers: {'token': managerAuth.token}
         });
         expect(response.ok(), 'Failed to get world list after deletion').toBeTruthy();
         const worlds = (await response.json()).worlds;

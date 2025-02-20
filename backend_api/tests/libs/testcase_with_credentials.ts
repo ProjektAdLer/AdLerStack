@@ -1,4 +1,4 @@
-import { test as base, expect } from '@playwright/test';
+import {expect, test as base} from '@playwright/test';
 
 type AuthData = {
     token: string;
@@ -20,24 +20,24 @@ async function loginAndFetchUser(
 ): Promise<AuthData> {
     // 1. Login
     const loginResponse = await request.get('/api/Users/Login', {
-        params: { UserName: username, Password: password }
+        params: {UserName: username, Password: password}
     });
     expect(loginResponse.ok(), 'Login request failed').toBeTruthy();
     const loginData = await loginResponse.json();
 
     // 2. Retrieve user details
     const userResponse = await request.get('/api/Player', {
-        headers: { token: loginData.lmsToken }
+        headers: {token: loginData.lmsToken}
     });
     expect(userResponse.ok(), 'User details request failed').toBeTruthy();
     const userData = await userResponse.json();
 
     // 3. Return relevant auth data
-    return { token: loginData.lmsToken, userId: userData.userId };
+    return {token: loginData.lmsToken, userId: userData.userId};
 }
 
 export const test = base.extend<ManagerAuthFixture & StudentAuthFixture>({
-    managerAuth: async ({ request }, use) => {
+    managerAuth: async ({request}, use) => {
         const manager = await loginAndFetchUser(
             request,
             process.env._PLAYWRIGHT_USER_MANAGER_USERNAME!,
@@ -46,7 +46,7 @@ export const test = base.extend<ManagerAuthFixture & StudentAuthFixture>({
         await use(manager);
     },
 
-    studentAuth: async ({ request }, use) => {
+    studentAuth: async ({request}, use) => {
         const student = await loginAndFetchUser(
             request,
             process.env._PLAYWRIGHT_USER_STUDENT_USERNAME!,
