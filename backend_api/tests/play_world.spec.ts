@@ -141,18 +141,6 @@ test.describe.serial('Student access workflow', () => {
     });
 
     test("Student can get adaptivity element content", async ({request, studentAuth}) => {
-        // Get initial adaptivity element score (should be incomplete)
-        const initialScoreResponse = await request.get(
-            `/api/Elements/World/${worldId}/Element/${adaptivityElementId}/Score`,
-            {
-                headers: {'token': studentAuth.token}
-            }
-        );
-
-        expect(initialScoreResponse.ok(), 'Getting initial adaptivity element score failed').toBeTruthy();
-        const initialAdaptivityElementScore = await initialScoreResponse.json();
-        expect(initialAdaptivityElementScore.success, 'Adaptivity element should be incomplete initially').toBeFalsy();
-
         const response = await request.get(
             `/api/Elements/World/${worldId}/Element/${adaptivityElementId}/Adaptivity`,
             {
@@ -165,6 +153,42 @@ test.describe.serial('Student access workflow', () => {
         expect(adaptivityElementContent, 'Adaptivity element content not found').toBeTruthy();
 
         // TODO an sich könnte man hier auf Testen, ob der content auch die Strings enthält, die im AMG gesetzt wurden.
+    });
+
+    test("Student can complete adaptivity element", async ({request, studentAuth}) => {
+        // Get initial adaptivity element score (should be incomplete)
+        const initialScoreResponse = await request.get(
+            `/api/Elements/World/${worldId}/Element/${adaptivityElementId}/Score`,
+            {
+                headers: {'token': studentAuth.token}
+            }
+        );
+
+        expect(initialScoreResponse.ok(), 'Getting initial adaptivity element score failed').toBeTruthy();
+        const initialAdaptivityElementScore = await initialScoreResponse.json();
+        expect(initialAdaptivityElementScore.success, 'Adaptivity element should be incomplete initially').toBeFalsy();
+
+
+        // Für wenn ich mal weider bock habe, hier weiter zu arbeiten
+        // {
+        //     "element": {
+        //     "elementId": 2,
+        //         "success": false
+        // },
+        //     "questions": [
+        //     {
+        //         "id": 1,
+        //         "status": "NotAttempted",
+        //         "answers": null
+        //     }
+        // ],
+        //     "tasks": [
+        //     {
+        //         "taskId": 1,
+        //         "taskStatus": "NotAttempted"
+        //     }
+        // ]
+        // }
     });
 
     test.afterAll(async ({request, managerAuth}) => {
