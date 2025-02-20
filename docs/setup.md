@@ -18,7 +18,7 @@ To simplify mainting the docker-compose.yml files this project uses the followin
 - docker-compose.test-adjustments.yml: This file contains all modifications needed for the test environment.
 
 Use the following commands to start/stop/pull the docker containers:
-- start: `docker-compose -f docker-compose.base.yml -f docker-compose.test-adjustments.yml up -d`
+- start: `docker-compose -f docker-compose.base.yml -f docker-compose.test-adjustments.yml up -d --build`
 - stop: `docker-compose -f docker-compose.base.yml -f docker-compose.test-adjustments.yml down`
 - pull: `docker-compose -f docker-compose.base.yml -f docker-compose.test-adjustments.yml pull`
 

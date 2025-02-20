@@ -1,8 +1,8 @@
 import {readFileSync} from "fs";
 import * as path from "path";
-import {expect} from "@playwright/test";
+import { expect } from '@playwright/test';
 import {enrollInMoodleCourse} from "./libs/moodle_helpers";
-import {test} from "./worlds.spec";
+import {test} from "./libs/testcase_with_credentials";
 
 test.describe.serial('Student access workflow', () => {
     let worldId: number;
