@@ -140,6 +140,33 @@ test.describe.serial('Student access workflow', () => {
         expect(finalScore.success, 'Element should be completed after scoring').toBeTruthy();
     });
 
+    test("Student can get adaptivity element content", async ({request, studentAuth}) => {
+        // Get initial adaptivity element score (should be incomplete)
+        const initialScoreResponse = await request.get(
+            `/api/Elements/World/${worldId}/Element/${adaptivityElementId}/Score`,
+            {
+                headers: {'token': studentAuth.token}
+            }
+        );
+
+        expect(initialScoreResponse.ok(), 'Getting initial adaptivity element score failed').toBeTruthy();
+        const initialAdaptivityElementScore = await initialScoreResponse.json();
+        expect(initialAdaptivityElementScore.success, 'Adaptivity element should be incomplete initially').toBeFalsy();
+
+        const response = await request.get(
+            `/api/Elements/World/${worldId}/Element/${adaptivityElementId}/Adaptivity`,
+            {
+                headers: {'token': studentAuth.token}
+            }
+        );
+
+        expect(response.ok(), 'Getting adaptivity element content failed').toBeTruthy();
+        const adaptivityElementContent = await response.json();
+        expect(adaptivityElementContent, 'Adaptivity element content not found').toBeTruthy();
+
+        // TODO an sich könnte man hier auf Testen, ob der content auch die Strings enthält, die im AMG gesetzt wurden.
+    });
+
     test.afterAll(async ({request, managerAuth}) => {
         if (worldId) {
             await request.delete(`/api/Worlds/${worldId}`, {
