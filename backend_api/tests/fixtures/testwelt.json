@@ -9,7 +9,7 @@
     "evaluationLink": "",
     "enrolmentKey": "",
     "worldName": "testwelt",
-    "worldUUID": "fc2eb374-99e7-4bcb-b13c-859d82a5654b",
+    "worldUUID": "8f9c16b2-d8d9-4470-970c-775e503eef4e",
     "worldDescription": "",
     "worldGoals": [
       ""
@@ -27,14 +27,14 @@
         "spaceName": "testraum",
         "requiredPointsToComplete": 0,
         "spaceId": 1,
-        "spaceUUID": "a3421d18-c206-43e3-bcea-ee96c43e2841",
+        "spaceUUID": "b0a5f906-585c-40eb-9428-20a7ddb98676",
         "spaceDescription": "",
         "spaceSlotContents": [
           1,
           null,
           null,
           null,
-          null,
+          2,
           null
         ],
         "requiredSpacesToEnter": "",
@@ -58,6 +58,58 @@
         "elementName": "test_LE",
         "elementCategory": "text",
         "elementFileType": "txt"
+      },
+      {
+        "$type": "AdaptivityElement",
+        "elementId": 2,
+        "elementUUID": "b228a001-d5a6-4298-9321-56270b476465",
+        "elementName": "adaptivitaet",
+        "elementDescription": "",
+        "elementGoals": [
+          ""
+        ],
+        "elementCategory": "adaptivity",
+        "elementFileType": "adaptivity",
+        "elementMaxScore": 1,
+        "elementModel": "a_npc_alerobot",
+        "learningSpaceParentId": 1,
+        "adaptivityContent": {
+          "$type": "adaptivityContent",
+          "introText": "",
+          "adaptivityTasks": [
+            {
+              "$type": "adaptivityTask",
+              "taskId": 1,
+              "taskUUID": "b21cce56-93a5-434f-8a6a-e18c90fc748f",
+              "taskTitle": "Neue Aufgabe 1",
+              "optional": false,
+              "requiredDifficulty": 100,
+              "adaptivityQuestions": [
+                {
+                  "$type": "adaptivityQuestion",
+                  "questionType": "singleResponse",
+                  "questionId": 1,
+                  "questionUUID": "c2658eca-1f5e-47e9-a052-c638c3a6fef8",
+                  "questionDifficulty": 100,
+                  "questionText": "frage",
+                  "adaptivityRules": [],
+                  "choices": [
+                    {
+                      "$type": "AdaptivityQuestionAnswer",
+                      "answerText": "richtig",
+                      "isCorrect": true
+                    },
+                    {
+                      "$type": "AdaptivityQuestionAnswer",
+                      "answerText": "falsch",
+                      "isCorrect": false
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
       }
     ]
   }

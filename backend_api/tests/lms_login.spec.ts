@@ -1,6 +1,6 @@
-import {test, expect} from '@playwright/test';
+import { test, expect } from '@playwright/test';
 
-test('Backend login and user verification @safe', async ({request}) => {
+test('Backend login and user verification @safe', async ({ request }) => {
     // Get login token
     const loginResponse = await request.get(`http://${process.env._URL_BACKEND}/api/Users/Login`, {
         params: {
@@ -9,8 +9,9 @@ test('Backend login and user verification @safe', async ({request}) => {
         }
     });
     expect(loginResponse.ok(), 'Login request failed').toBeTruthy();
-    
+
     const loginData = await loginResponse.json();
     expect(loginData.lmsToken, 'No token in login response').toBeTruthy();
-    const apiToken = loginData.lmsToken;
+    expect(typeof loginData.lmsToken).toBe('string');
+    expect(loginData.lmsToken.length).toBeGreaterThan(0);
 });

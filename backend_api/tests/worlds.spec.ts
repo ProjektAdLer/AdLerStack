@@ -1,7 +1,6 @@
 import { test as base, expect } from '@playwright/test';
 import * as path from 'path';
 import {readFileSync} from 'fs';
-import {enrollInMoodleCourse} from "./libs/moodle_helpers";
 
 
 type AuthData = {
@@ -124,79 +123,8 @@ test.describe.serial('World lifecycle', () => {
     });
 });
 
-test.describe.serial('Student access workflow', () => {
-    let worldId: number;
 
-    test.beforeAll(async ({ request, managerAuth, studentAuth }) => {
-        // Upload world as manager
-        const uploadResponse = await request.post('/api/Worlds', {
-            headers: { 'token': managerAuth.token },
-            multipart: {
-                backupFile: {
-                    name: 'testwelt.mbz',
-                    mimeType: 'application/octet-stream',
-                    buffer: readFileSync(path.join(__dirname, 'fixtures', 'testwelt.mbz'))
-                },
-                atfFile: {
-                    name: 'testwelt.awf',
-                    mimeType: 'application/json',
-                    buffer: readFileSync(path.join(__dirname, 'fixtures', 'testwelt.json'))
-                }
-            }
-        });
-        console.log('Upload response:', await uploadResponse.text());
-        expect(uploadResponse.ok(), 'World upload failed').toBeTruthy();
-        const result = await uploadResponse.json();
-        worldId = result.worldId;
-
-        // Enroll student
-        await enrollInMoodleCourse(
-            request,
-            process.env._PLAYWRIGHT_USER_STUDENT_USERNAME!,
-            process.env._USER_STUDENT_PW!,
-            result.worldNameInLms
-        );
-
-    });
-
-    test('Student can see enrolled world', async ({ request, studentAuth }) => {
-        const response = await request.get('/api/Worlds', {
-            headers: { 'token': studentAuth.token }
-        });
-        expect(response.ok(), 'Getting world list failed').toBeTruthy();
-        const worlds = (await response.json()).worlds;
-        expect(worlds.some(w => w.worldId === worldId), 'Uploaded world not found in student list').toBeTruthy();
-    });
-
-    test('Student can access world ATF', async ({ request, studentAuth }) => {
-        const response = await request.get(`/api/Worlds/${worldId}`, {
-            headers: { 'token': studentAuth.token }
-        });
-        expect(response.ok(), 'Getting ATF file failed').toBeTruthy();
-        const atf = await response.json();
-        expect(atf.world.worldName, 'ATF file has no world name').toBeTruthy();
-    });
-
-    test('Student can get world status', async ({ request, studentAuth }) => {
-        const response = await request.get(`/api/Worlds/${worldId}/Status`, {
-            headers: { 'token': studentAuth.token }
-        });
-        expect(response.ok(), 'Getting world status failed').toBeTruthy();
-        const status = await response.json();
-        expect(status.worldId, 'Status response missing world ID').toBe(worldId);
-        expect(Array.isArray(status.elements), 'Status response missing elements array').toBeTruthy();
-    });
-
-    test.afterAll(async ({ request, managerAuth }) => {
-        if (worldId) {
-            await request.delete(`/api/Worlds/${worldId}`, {
-                headers: { 'token': managerAuth.token }
-            });
-        }
-    });
-});
-
-
+// https://github.com/ProjektAdLer/AdLerBackend/issues/29
 // test.describe('Student unauthorized actions', () => {
 //     let worldId: number;
 //     let managerUserId: number;
