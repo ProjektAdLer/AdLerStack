@@ -48,7 +48,9 @@ services:
           # Stop all containers on dind
           docker -H tcp://dind:2375 ps -aq | xargs -r docker -H tcp://dind:2375 stop
           # Remove all containers on dind
-          docker -H tcp://dind:2375 ps -aq | xargs -r docker -H tcp://dind:2375 rm
+          docker -H tcp://dind:2375 ps -aq | xargs -r docker -H tcp://dind:2375 rm -v
+          # Remove all unused volumes on dind
+          docker -H tcp://dind:2375 volume prune -f
 
           # Start the runner
           REGISTRATION_TOKEN=$(curl -sX POST -H \"Authorization: token $$GH_PAT\" \"https://api.github.com/orgs/$$ORG_NAME/actions/runners/registration-token\" | jq -r '.token')

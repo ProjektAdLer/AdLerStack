@@ -28,6 +28,9 @@ jobs:
       - name: Generate Docker Compose config
         run: docker compose -f docker-compose.base.yml -f docker-compose.test-adjustments.yml config > docker-compose.yml
 
+      - name: Remove existing Docker containers and volumes
+        run: docker compose down -v
+
       - name: Start Docker services
         run: docker compose up -d --wait --timeout 600 --pull always --build
 
