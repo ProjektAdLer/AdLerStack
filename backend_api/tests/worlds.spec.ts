@@ -16,6 +16,7 @@ test.describe.serial('World lifecycle', () => {
         });
         expect(response.ok(), 'Failed to get initial world list').toBeTruthy();
         const worlds = (await response.json()).worlds;
+        console.log('World list response:', (await response.text()));
         initialWorldCount = worlds.length;
     });
 
