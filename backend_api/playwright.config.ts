@@ -15,9 +15,6 @@ dotenvExpand.expand(myEnv);
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  /* allows to only run tests marked as safe */
-  grep: process.env.TEST_ENV === 'live' ? /@safe/ : /.*/,
-
   testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: true,

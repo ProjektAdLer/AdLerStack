@@ -9,7 +9,7 @@ test.describe.serial('Play world', () => {
     let learningElementId: number;
     let adaptivityElementId: number;
 
-    test.beforeAll(async ({ request, managerAuth, resetEnvironment }, testInfo) => {
+    test.beforeAll(async ({ request, managerAuth, resetEnvironment }) => {
         await resetEnvironment();
 
         // Upload world as manager

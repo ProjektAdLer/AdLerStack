@@ -1,6 +1,6 @@
 import {test, expect} from '@playwright/test';
 
-test('Test Moodle login for adler_services @safe', async ({request}) => {
+test('Test Moodle login for adler_services', async ({request}) => {
     // Get Moodle token
     const loginResponse = await request.post(`http://${process.env._URL_MOODLE}/login/token.php`, {
         form: {

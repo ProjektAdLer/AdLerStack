@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('Backend login and user verification @safe', async ({ request }) => {
+test('Backend login and user verification', async ({ request }) => {
     // Get login token
     const loginResponse = await request.get(`http://${process.env._URL_BACKEND}/api/Users/Login`, {
         params: {

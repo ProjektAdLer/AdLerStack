@@ -1,14 +1,15 @@
-import { test as base, expect } from '@playwright/test';
+import { expect } from '@playwright/test';
 import * as path from 'path';
 import {readFileSync} from 'fs';
 import {test} from "./libs/testcase_with_credentials";
 
-
-
-
 test.describe.serial('World lifecycle', () => {
     let initialWorldCount: number;
     let uploadedWorldId: number;
+
+    test.beforeAll(async ({ resetEnvironment }) => {
+        await resetEnvironment();
+    });
 
     test('Get initial world count', async ({ request, managerAuth }) => {
         const response = await request.get(`/api/Worlds/author/${(await managerAuth()).userId}`, {
@@ -75,6 +76,11 @@ test.describe.serial('World lifecycle', () => {
 // test.describe('Student unauthorized actions', () => {
 //     let worldId: number;
 //     let managerUserId: number;
+//
+//
+//     test.beforeAll(async ({ resetEnvironment }) => {
+//         await resetEnvironment();
+//     });
 //
 //     test.beforeEach(async ({ request, managerAuth }) => {
 //         // Setup: Upload fresh world before EACH test

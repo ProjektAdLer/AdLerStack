@@ -1,6 +1,11 @@
-import { test, expect } from '@playwright/test';
+import { expect } from '@playwright/test';
+import { test } from './libs/testcase_with_credentials';
 
-test('Get player data @safe', async ({ request }) => {
+test.beforeAll(async ({ resetEnvironment }) => {
+    await resetEnvironment();
+});
+
+test('Get player data', async ({ request }) => {
     const username = process.env._PLAYWRIGHT_USER_MANAGER_USERNAME;
     const password = process.env._USER_MANAGER_PW;
     
