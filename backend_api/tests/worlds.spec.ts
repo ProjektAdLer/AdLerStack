@@ -11,8 +11,8 @@ test.describe.serial('World lifecycle', () => {
     let uploadedWorldId: number;
 
     test('Get initial world count', async ({ request, managerAuth }) => {
-        const response = await request.get(`/api/Worlds/author/${managerAuth.userId}`, {
-            headers: { 'token': managerAuth.token }
+        const response = await request.get(`/api/Worlds/author/${(await managerAuth()).userId}`, {
+            headers: { 'token': (await managerAuth()).token }
         });
         expect(response.ok(), 'Failed to get initial world list').toBeTruthy();
         const worlds = (await response.json()).worlds;
@@ -22,7 +22,7 @@ test.describe.serial('World lifecycle', () => {
 
     test('Upload world', async ({ request, managerAuth }) => {
         const response = await request.post(`/api/Worlds`, {
-            headers: { 'token': managerAuth.token },
+            headers: { 'token': (await managerAuth()).token },
             multipart: {
                 backupFile: {
                     name: 'testwelt.mbz',
@@ -43,8 +43,8 @@ test.describe.serial('World lifecycle', () => {
     });
 
     test('Verify world in list', async ({ request, managerAuth }) => {
-        const response = await request.get(`/api/Worlds/author/${managerAuth.userId}`, {
-            headers: { 'token': managerAuth.token }
+        const response = await request.get(`/api/Worlds/author/${(await managerAuth()).userId}`, {
+            headers: { 'token': (await managerAuth()).token }
         });
         expect(response.ok(), 'Failed to get world list after upload').toBeTruthy();
         const worlds = (await response.json()).worlds;
@@ -54,14 +54,14 @@ test.describe.serial('World lifecycle', () => {
 
     test('Delete world', async ({ request, managerAuth }) => {
         const response = await request.delete(`/api/Worlds/${uploadedWorldId}`, {
-            headers: { 'token': managerAuth.token }
+            headers: { 'token': (await managerAuth()).token }
         });
         expect(response.ok(), 'World deletion request failed').toBeTruthy();
     });
 
     test('Verify world deleted', async ({ request, managerAuth }) => {
-        const response = await request.get(`/api/Worlds/author/${managerAuth.userId}`, {
-            headers: { 'token': managerAuth.token }
+        const response = await request.get(`/api/Worlds/author/${(await managerAuth()).userId}`, {
+            headers: { 'token': (await managerAuth()).token }
         });
         expect(response.ok(), 'Failed to get world list after deletion').toBeTruthy();
         const worlds = (await response.json()).worlds;
@@ -79,7 +79,7 @@ test.describe.serial('World lifecycle', () => {
 //     test.beforeEach(async ({ request, managerAuth }) => {
 //         // Setup: Upload fresh world before EACH test
 //         const uploadResponse = await request.post('/api/Worlds', {
-//             headers: { 'token': managerAuth.token },
+//             headers: { 'token': (await managerAuth()).token },
 //             multipart: {
 //                 backupFile: {
 //                     name: 'testwelt.mbz',
@@ -96,21 +96,21 @@ test.describe.serial('World lifecycle', () => {
 //         expect(uploadResponse.ok(), 'World setup upload failed').toBeTruthy();
 //         const result = await uploadResponse.json();
 //         worldId = result.worldId;
-//         managerUserId = managerAuth.userId;
+//         managerUserId = (await managerAuth()).userId;
 //     });
 //
 //     test.afterEach(async ({ request, managerAuth }) => {
 //         // Teardown: Delete world after EACH test
 //         if (worldId) {
 //             await request.delete(`/api/Worlds/${worldId}`, {
-//                 headers: { 'token': managerAuth.token }
+//                 headers: { 'token': (await managerAuth()).token }
 //             });
 //         }
 //     });
 //
 //     test('Student cannot delete world uploaded by manager', async ({ request, studentAuth }) => {
 //         const response = await request.delete(`/api/Worlds/${worldId}`, {
-//             headers: { 'token': studentAuth.token }
+//             headers: { 'token': (await studentAuth()).token }
 //         });
 //         console.log('Response:', await response.text());
 //         expect(response.ok(), 'Student should not be able to delete world').toBeFalsy();

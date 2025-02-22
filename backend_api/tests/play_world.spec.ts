@@ -4,15 +4,17 @@ import { expect } from '@playwright/test';
 import {enrollInMoodleCourse} from "./libs/moodle_helpers";
 import {test} from "./libs/testcase_with_credentials";
 
-test.describe.serial('Student access workflow', () => {
+test.describe.serial('Play world', () => {
     let worldId: number;
     let learningElementId: number;
     let adaptivityElementId: number;
 
-    test.beforeAll(async ({ request, managerAuth, studentAuth }) => {
+    test.beforeAll(async ({ request, managerAuth, resetEnvironment }, testInfo) => {
+        await resetEnvironment();
+
         // Upload world as manager
         const uploadResponse = await request.post('/api/Worlds', {
-            headers: { 'token': managerAuth.token },
+            headers: { 'token': (await managerAuth()).token },
             multipart: {
                 backupFile: {
                     name: 'testwelt.mbz',
@@ -24,7 +26,7 @@ test.describe.serial('Student access workflow', () => {
                     mimeType: 'application/json',
                     buffer: readFileSync(path.join(__dirname, 'fixtures', 'testwelt.json'))
                 }
-            }
+            },
         });
         console.log('Upload response:', await uploadResponse.text());
         expect(uploadResponse.ok(), 'World upload failed').toBeTruthy();
@@ -43,7 +45,7 @@ test.describe.serial('Student access workflow', () => {
 
     test('Student can see enrolled world', async ({ request, studentAuth }) => {
         const response = await request.get('/api/Worlds', {
-            headers: { 'token': studentAuth.token }
+            headers: { 'token': (await studentAuth()).token }
         });
         expect(response.ok(), 'Getting world list failed').toBeTruthy();
         const worlds = (await response.json()).worlds;
@@ -52,7 +54,7 @@ test.describe.serial('Student access workflow', () => {
 
     test('Student can access world ATF', async ({ request, studentAuth }) => {
         const response = await request.get(`/api/Worlds/${worldId}`, {
-            headers: { 'token': studentAuth.token }
+            headers: { 'token': (await studentAuth()).token }
         });
         expect(response.ok(), 'Getting ATF file failed').toBeTruthy();
         const atf = await response.json();
@@ -71,7 +73,7 @@ test.describe.serial('Student access workflow', () => {
 
     test('Student can get world status', async ({ request, studentAuth }) => {
         const response = await request.get(`/api/Worlds/${worldId}/Status`, {
-            headers: { 'token': studentAuth.token }
+            headers: { 'token': (await studentAuth()).token }
         });
         expect(response.ok(), 'Getting world status failed').toBeTruthy();
         const status = await response.json();
@@ -84,7 +86,7 @@ test.describe.serial('Student access workflow', () => {
         const pathResponse = await request.get(
             `/api/Elements/FilePath/World/${worldId}/Element/${learningElementId}`,
             {
-                headers: { 'token': studentAuth.token }
+                headers: { 'token': (await studentAuth()).token }
             }
         );
         expect(pathResponse.ok(), `Getting file path for learning element failed`).toBeTruthy();
@@ -93,7 +95,7 @@ test.describe.serial('Student access workflow', () => {
 
         // Access the learning element file
         const fileResponse = await request.get(pathData.filePath, {
-            headers: { 'token': studentAuth.token }
+            headers: { 'token': (await studentAuth()).token }
         });
         expect(fileResponse.ok(), `Accessing file for learning element failed`).toBeTruthy();
         const fileContent = await fileResponse.text();
@@ -105,7 +107,7 @@ test.describe.serial('Student access workflow', () => {
         const initialScoreResponse = await request.get(
             `/api/Elements/World/${worldId}/Element/${learningElementId}/Score`,
             {
-                headers: { 'token': studentAuth.token }
+                headers: { 'token': (await studentAuth()).token }
             }
         );
         expect(initialScoreResponse.ok(), 'Getting initial score failed').toBeTruthy();
@@ -117,7 +119,7 @@ test.describe.serial('Student access workflow', () => {
             `/api/Elements/World/${worldId}/Element/${learningElementId}`,
             {
                 headers: { 
-                    'token': studentAuth.token,
+                    'token': (await studentAuth()).token,
                     'Content-Type': 'application/json'
                 },
                 data: { serializedXapiEvent: null }
@@ -131,7 +133,7 @@ test.describe.serial('Student access workflow', () => {
         const finalScoreResponse = await request.get(
             `/api/Elements/World/${worldId}/Element/${learningElementId}/Score`,
             {
-                headers: { 'token': studentAuth.token }
+                headers: { 'token': (await studentAuth()).token }
             }
         );
         expect(finalScoreResponse.ok(), 'Getting final score failed').toBeTruthy();
@@ -142,7 +144,7 @@ test.describe.serial('Student access workflow', () => {
     test.afterAll(async ({ request, managerAuth }) => {
         if (worldId) {
             await request.delete(`/api/Worlds/${worldId}`, {
-                headers: { 'token': managerAuth.token }
+                headers: { 'token': (await managerAuth()).token }
             });
         }
     });

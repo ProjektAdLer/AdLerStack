@@ -34,6 +34,9 @@ jobs:
       - name: Start Docker services
         run: docker compose up -d --wait --timeout 600 --pull always --build
 
+      - name: Take Volume snapshots (for later environment resets)
+        run: ./docker-volumes-snapshot.sh snapshot
+
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
