@@ -1,4 +1,4 @@
-import {test, expect} from '@playwright/test';
+import {expect, test} from '@playwright/test';
 
 test('Test Moodle login for adler_services', async ({request}) => {
     // Get Moodle token

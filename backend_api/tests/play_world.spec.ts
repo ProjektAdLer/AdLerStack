@@ -1,6 +1,6 @@
 import {readFileSync} from "fs";
 import * as path from "path";
-import { expect } from '@playwright/test';
+import {expect} from '@playwright/test';
 import {enrollInMoodleCourse} from "./libs/moodle_helpers";
 import {test} from "./libs/testcase_with_credentials";
 
@@ -26,7 +26,7 @@ test.describe.serial('Play world', () => {
                     mimeType: 'application/json',
                     buffer: readFileSync(path.join(__dirname, 'fixtures', 'testwelt.json'))
                 }
-            },
+            }
         });
         console.log('Upload response:', await uploadResponse.text());
         expect(uploadResponse.ok(), 'World upload failed').toBeTruthy();
@@ -40,10 +40,9 @@ test.describe.serial('Play world', () => {
             process.env._USER_STUDENT_PW!,
             result.worldNameInLms
         );
-
     });
 
-    test('Student can see enrolled world', async ({ request, studentAuth }) => {
+    test('Student can see enrolled world', async ({request, studentAuth}) => {
         const response = await request.get('/api/Worlds', {
             headers: { 'token': (await studentAuth()).token }
         });
@@ -52,9 +51,9 @@ test.describe.serial('Play world', () => {
         expect(worlds.some(w => w.worldId === worldId), 'Uploaded world not found in student list').toBeTruthy();
     });
 
-    test('Student can access world ATF', async ({ request, studentAuth }) => {
+    test('Student can access world ATF', async ({request, studentAuth}) => {
         const response = await request.get(`/api/Worlds/${worldId}`, {
-            headers: { 'token': (await studentAuth()).token }
+            headers: {'token': (await studentAuth()).token}
         });
         expect(response.ok(), 'Getting ATF file failed').toBeTruthy();
         const atf = await response.json();
@@ -63,17 +62,17 @@ test.describe.serial('Play world', () => {
         // Find and store element IDs from ATF
         const normalElement = atf.world.elements.find(e => e.elementCategory === 'text');
         const adaptivityElement = atf.world.elements.find(e => e.elementCategory === 'adaptivity');
-        
+
         expect(normalElement, 'Learning element not found in ATF').toBeTruthy();
         expect(adaptivityElement, 'Adaptivity element not found in ATF').toBeTruthy();
-        
+
         learningElementId = normalElement.elementId;
         adaptivityElementId = adaptivityElement.elementId;
     });
 
-    test('Student can get world status', async ({ request, studentAuth }) => {
+    test('Student can get world status', async ({request, studentAuth}) => {
         const response = await request.get(`/api/Worlds/${worldId}/Status`, {
-            headers: { 'token': (await studentAuth()).token }
+            headers: {'token': (await studentAuth()).token}
         });
         expect(response.ok(), 'Getting world status failed').toBeTruthy();
         const status = await response.json();
@@ -81,12 +80,12 @@ test.describe.serial('Play world', () => {
         expect(Array.isArray(status.elements), 'Status response missing elements array').toBeTruthy();
     });
 
-    test('Student can get element file paths and access files', async ({ request, studentAuth }) => {
+    test('Student can get element file paths and access files', async ({request, studentAuth}) => {
         // Test regular learning element
         const pathResponse = await request.get(
             `/api/Elements/FilePath/World/${worldId}/Element/${learningElementId}`,
             {
-                headers: { 'token': (await studentAuth()).token }
+                headers: {'token': (await studentAuth()).token}
             }
         );
         expect(pathResponse.ok(), `Getting file path for learning element failed`).toBeTruthy();
@@ -95,19 +94,19 @@ test.describe.serial('Play world', () => {
 
         // Access the learning element file
         const fileResponse = await request.get(pathData.filePath, {
-            headers: { 'token': (await studentAuth()).token }
+            headers: {'token': (await studentAuth()).token}
         });
         expect(fileResponse.ok(), `Accessing file for learning element failed`).toBeTruthy();
         const fileContent = await fileResponse.text();
         expect(fileContent, `File content doesn't match expected value`).toBe('test');
     });
 
-    test('Student can complete learning element', async ({ request, studentAuth }) => {
+    test('Student can complete learning element', async ({request, studentAuth}) => {
         // Check initial score (should be incomplete)
         const initialScoreResponse = await request.get(
             `/api/Elements/World/${worldId}/Element/${learningElementId}/Score`,
             {
-                headers: { 'token': (await studentAuth()).token }
+                headers: {'token': (await studentAuth()).token}
             }
         );
         expect(initialScoreResponse.ok(), 'Getting initial score failed').toBeTruthy();
@@ -118,11 +117,11 @@ test.describe.serial('Play world', () => {
         const completeResponse = await request.patch(
             `/api/Elements/World/${worldId}/Element/${learningElementId}`,
             {
-                headers: { 
+                headers: {
                     'token': (await studentAuth()).token,
                     'Content-Type': 'application/json'
                 },
-                data: { serializedXapiEvent: null }
+                data: {serializedXapiEvent: null}
             }
         );
         expect(completeResponse.ok(), 'Completing element failed').toBeTruthy();
@@ -133,7 +132,7 @@ test.describe.serial('Play world', () => {
         const finalScoreResponse = await request.get(
             `/api/Elements/World/${worldId}/Element/${learningElementId}/Score`,
             {
-                headers: { 'token': (await studentAuth()).token }
+                headers: {'token': (await studentAuth()).token}
             }
         );
         expect(finalScoreResponse.ok(), 'Getting final score failed').toBeTruthy();
@@ -141,10 +140,61 @@ test.describe.serial('Play world', () => {
         expect(finalScore.success, 'Element should be completed after scoring').toBeTruthy();
     });
 
-    test.afterAll(async ({ request, managerAuth }) => {
+    test("Student can get adaptivity element content", async ({request, studentAuth}) => {
+        const response = await request.get(
+            `/api/Elements/World/${worldId}/Element/${adaptivityElementId}/Adaptivity`,
+            {
+                headers: {'token': (await studentAuth()).token}
+            }
+        );
+
+        expect(response.ok(), 'Getting adaptivity element content failed').toBeTruthy();
+        const adaptivityElementContent = await response.json();
+        expect(adaptivityElementContent, 'Adaptivity element content not found').toBeTruthy();
+
+        // TODO an sich könnte man hier auf Testen, ob der content auch die Strings enthält, die im AMG gesetzt wurden.
+    });
+
+    test("Student can complete adaptivity element", async ({request, studentAuth}) => {
+        // Get initial adaptivity element score (should be incomplete)
+        const initialScoreResponse = await request.get(
+            `/api/Elements/World/${worldId}/Element/${adaptivityElementId}/Score`,
+            {
+                headers: {'token': (await studentAuth()).token}
+            }
+        );
+
+        expect(initialScoreResponse.ok(), 'Getting initial adaptivity element score failed').toBeTruthy();
+        const initialAdaptivityElementScore = await initialScoreResponse.json();
+        expect(initialAdaptivityElementScore.success, 'Adaptivity element should be incomplete initially').toBeFalsy();
+
+
+        // Für wenn ich mal weider bock habe, hier weiter zu arbeiten
+        // {
+        //     "element": {
+        //     "elementId": 2,
+        //         "success": false
+        // },
+        //     "questions": [
+        //     {
+        //         "id": 1,
+        //         "status": "NotAttempted",
+        //         "answers": null
+        //     }
+        // ],
+        //     "tasks": [
+        //     {
+        //         "taskId": 1,
+        //         "taskStatus": "NotAttempted"
+        //     }
+        // ]
+        // }
+    });
+
+    test.afterAll(async ({request, managerAuth}) => {
         if (worldId) {
             await request.delete(`/api/Worlds/${worldId}`, {
-                headers: { 'token': (await managerAuth()).token }
+                headers: {'token': (await managerAuth()).token}
             });
         }
     });

@@ -5,8 +5,8 @@ services:
     privileged: true
     environment:
       DOCKER_TLS_CERTDIR: ""  # Disable TLS
-    healthcheck:  # <-- Added healthcheck
-      test: ["CMD", "docker", "info"]
+    healthcheck: # <-- Added healthcheck
+      test: [ "CMD", "docker", "info" ]
       interval: 5s
       timeout: 10s
       start_period: 10s

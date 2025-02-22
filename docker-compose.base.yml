@@ -26,7 +26,7 @@ services:
     restart: unless-stopped
     # todo: remove this healthcheck after next image release
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      test: [ "CMD", "curl", "-f", "http://localhost:8080" ]
       start_period: 10m
 
   db_moodle:
@@ -42,7 +42,7 @@ services:
       - db_moodle_data:/bitnami/mariadb
     restart: unless-stopped
     healthcheck:
-      test: ['CMD', '/opt/bitnami/scripts/mariadb/healthcheck.sh']
+      test: [ 'CMD', '/opt/bitnami/scripts/mariadb/healthcheck.sh' ]
       start_period: 10s
       interval: 15s
       timeout: 5s
@@ -60,7 +60,7 @@ services:
       - db_backend_data:/bitnami/mariadb
     restart: unless-stopped
     healthcheck:
-      test: ['CMD', '/opt/bitnami/scripts/mariadb/healthcheck.sh']
+      test: [ 'CMD', '/opt/bitnami/scripts/mariadb/healthcheck.sh' ]
       start_period: 10s
       interval: 15s
       timeout: 5s
@@ -97,7 +97,7 @@ services:
     restart: unless-stopped
     # todo: remove this healthcheck after next image release
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost"]
+      test: [ "CMD", "curl", "-f", "http://localhost" ]
       start_period: 30s
 
   phpmyadmin:
