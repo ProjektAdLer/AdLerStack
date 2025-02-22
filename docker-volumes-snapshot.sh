@@ -19,13 +19,13 @@ docker build -f Dockerfile-backup-image -t alpine-zstd .
 # Make sure backup directory exists
 mkdir -p "$BACKUP_DIR"
 
-echo "=== Stopping containers..."
-docker compose down
-
 # Gather volumes belonging to this project
 VOLUMES=$(docker volume ls -q --filter "label=com.docker.compose.project=$PROJECT_NAME")
 
 if [ "$MODE" = "snapshot" ]; then
+  echo "=== Stopping containers..."
+  docker compose down
+
   echo -e "\n=== Backing up volumes for project '$PROJECT_NAME'..."
   # Remove old backups, recreate the directory
   rm -rf "$BACKUP_DIR"/*
@@ -49,6 +49,9 @@ else
     echo "ERROR: docker compose config has changed. Recreate the containers and take a fresh snapshot."
     exit 1
   fi
+
+  echo "=== Stopping containers..."
+  docker compose kill
 
   echo -e "\n=== Restoring volumes for project '$PROJECT_NAME'..."
   for VOLUME in $VOLUMES; do
