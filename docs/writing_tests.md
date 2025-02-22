@@ -1,11 +1,23 @@
 # Writing tests
 In general refer to the official documentation.
 
-Tests are always run against the Docker environment. It does not reset automatically so it might be required to manually 
-reset between test executions. It is possible to do this only for certain services: 
-- `docker compose down authoring-tool && docker compose up --force-recreate -d authoring-tool` restarts authoring-tool. This will not delete data in volumes
-- `docker compose down -v && docker compose up -d` restarts all services and deletes all data. Will take a few minutes
+## Test environment reset
+Tests are always run against the Docker environment. The environment is not automatically reset after each test.
+If the environment should be reset, which should be done before each test scenario, do the following:
 
+```typescript
+test.beforeAll(async ({ resetEnvironment }, testInfo) => {
+    await resetEnvironment();
+});
+```
+
+This will reset the test environment to the snapshot taken before, see [General setup](docs/setup.md#general-setup).
+
+Note that this process will take roughly half a minute each time.
+
+
+
+## Environment variables and URLs
 Always use the environment variables for "variable" data like URLs or login credentials. See the `.env` file in the root directory for the available variables.
 Each playwright project has a default URL specified. Use it.
 
