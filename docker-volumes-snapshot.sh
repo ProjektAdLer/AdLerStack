@@ -37,8 +37,10 @@ if [ "$MODE" = "snapshot" ]; then
       -v "$VOLUME":/source \
       -v "$(pwd)/$BACKUP_DIR":/backup \
       alpine-zstd \
-      sh -c "tar -cf - -C /source . | zstd -T0 --long=31 > /backup/${VOLUME}.zst"
+      sh -c "tar -cf - -C /source . | zstd -T0 --long=31 > /backup/${VOLUME}.zst" \
+      &  # Run in background for parallel backup
   done
+  wait
   echo -e "\nSnapshot completed successfully to: $BACKUP_DIR"
 else
   STORED_HASH=$(cat "${BACKUP_DIR}/docker-compose.yml.hash")
@@ -60,10 +62,14 @@ else
       -v "$VOLUME":/target \
       -v "$(pwd)/$BACKUP_DIR":/backup \
       alpine-zstd \
-      sh -c "rm -rf /target/* /target/..?* /target/.[!.]* && zstd --memory=2048MB -d -c /backup/${VOLUME}.zst | tar -xf - -C /target"
+      sh -c "rm -rf /target/* /target/..?* /target/.[!.]* && zstd --memory=2048MB -d -c /backup/${VOLUME}.zst | tar -xf - -C /target" \
+      &  # Run in background for parallel restore
   done
-  echo -e "\nRestore completed successfully from: $BACKUP_DIR"
+  wait
+  echo -e "\nRestore completed successfully"
 fi
 
 echo -e "\n=== Restarting containers..."
 docker compose up -d --wait --force-recreate
+
+echo -e "\n=== Done"
