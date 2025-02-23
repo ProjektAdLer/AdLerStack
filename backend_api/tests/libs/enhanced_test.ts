@@ -55,11 +55,22 @@ const test = baseTest.extend<ManagerAuthFixture & StudentAuthFixture & { resetEn
             }
             console.log('Resetting environment. This will take around half a minute...');
 
-            const output = execSync('./docker-volumes-snapshot.sh restore 2>&1', {
-                encoding: 'utf-8',
-                cwd: '..',
-            });
-            console.log(output);
+            try {
+                const output = execSync('./docker-volumes-snapshot.sh restore 2>&1', {
+                    encoding: 'utf-8',
+                    cwd: '..',
+                    stdio: ['inherit', 'pipe', 'pipe'],
+                });
+                console.log('Script output:', output);
+            } catch (error) {
+                console.error('Error details:', {
+                    message: error.message,
+                    status: error.status,
+                    stdout: error.stdout,
+                    stderr: error.stderr
+                });
+                throw error;
+            }
 
             // This is crucial! Without it there is a strange timing issue with subsequent stuff in the same test/beforeX block.
             await new Promise(resolve => setTimeout(resolve, 1));
