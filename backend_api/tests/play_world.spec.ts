@@ -168,27 +168,44 @@ test.describe.serial('Student access workflow', () => {
         const initialAdaptivityElementScore = await initialScoreResponse.json();
         expect(initialAdaptivityElementScore.success, 'Adaptivity element should be incomplete initially').toBeFalsy();
 
+        // Get Adaptivity Element Details
+        const adaptivityElementDetails = await request.get(
+            `/api/Elements/World/${worldId}/Element/${adaptivityElementId}/Adaptivity`,
+            {
+                headers: {'token': studentAuth.token}
+            }
+        );
+        expect(adaptivityElementDetails.ok(), 'Getting adaptivity element details failed').toBeTruthy();
+        const adaptivityElement = await adaptivityElementDetails.json();
+        expect(adaptivityElement, 'Adaptivity element not found').toBeTruthy();
 
-        // Für wenn ich mal weider bock habe, hier weiter zu arbeiten
-        // {
-        //     "element": {
-        //     "elementId": 2,
-        //         "success": false
-        // },
-        //     "questions": [
-        //     {
-        //         "id": 1,
-        //         "status": "NotAttempted",
-        //         "answers": null
-        //     }
-        // ],
-        //     "tasks": [
-        //     {
-        //         "taskId": 1,
-        //         "taskStatus": "NotAttempted"
-        //     }
-        // ]
-        // }
+        // Complete the adaptivity element
+        const completeResponse = await request.patch(
+            `/api/Elements/World/${worldId}/Element/${adaptivityElementId}/Question/1`,
+            {
+                headers: {
+                    'token': studentAuth.token,
+                    'Content-Type': 'text/json'
+                },
+                data: "[true,false]"
+            }
+        );
+        expect(completeResponse.ok(), 'Completing adaptivity element failed').toBeTruthy();
+        const completeResult = await completeResponse.json();
+        expect(completeResult.elementScore.success, 'Adaptivity element completion should be successful').toBeTruthy();
+
+        // Double check, if the element is marked as completed using the default Endpoint for all elements
+        // Get initial adaptivity element score (should be incomplete)
+        const adaptivityScoreAfterCompletion = await request.get(
+            `/api/Elements/World/${worldId}/Element/${adaptivityElementId}/Score`,
+            {
+                headers: {'token': studentAuth.token}
+            }
+        );
+
+        expect(adaptivityScoreAfterCompletion.ok(), 'Getting initial adaptivity element score failed').toBeTruthy();
+        const adaptivityScoreAfterCompletionValue = await adaptivityScoreAfterCompletion.json();
+        expect(adaptivityScoreAfterCompletionValue.success, 'Adaptivity element should be incomplete initially').toBeTruthy();
     });
 
     test.afterAll(async ({request, managerAuth}) => {
