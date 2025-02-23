@@ -172,7 +172,7 @@ test.describe.serial('Play world', () => {
         const adaptivityElementDetails = await request.get(
             `/api/Elements/World/${worldId}/Element/${adaptivityElementId}/Adaptivity`,
             {
-                headers: {'token': studentAuth.token}
+                headers: {'token': (await studentAuth()).token}
             }
         );
         expect(adaptivityElementDetails.ok(), 'Getting adaptivity element details failed').toBeTruthy();
@@ -184,7 +184,7 @@ test.describe.serial('Play world', () => {
             `/api/Elements/World/${worldId}/Element/${adaptivityElementId}/Question/1`,
             {
                 headers: {
-                    'token': studentAuth.token,
+                    'token': (await studentAuth()).token,
                     'Content-Type': 'text/json'
                 },
                 data: "[true,false]"
@@ -199,7 +199,7 @@ test.describe.serial('Play world', () => {
         const adaptivityScoreAfterCompletion = await request.get(
             `/api/Elements/World/${worldId}/Element/${adaptivityElementId}/Score`,
             {
-                headers: {'token': studentAuth.token}
+                headers: {'token': (await studentAuth()).token}
             }
         );
 
