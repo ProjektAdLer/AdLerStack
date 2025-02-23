@@ -53,14 +53,16 @@ const test = baseTest.extend<ManagerAuthFixture & StudentAuthFixture & { resetEn
             if (process.platform !== 'linux') {
                 throw new Error('Environment reset is only supported on Linux');
             }
-            console.log('Resetting environment. This will take around a minute...');
+            console.log('Resetting environment. This will take around half a minute...');
             const output = execSync('./docker-volumes-snapshot.sh restore 2>&1', {
                 encoding: 'utf-8',
                 cwd: '..',
+                timeout: 90000 // This is crucial! Without it there is a strange timing issue with subsequent stuff in the same test/beforeX block. Alternatively a 1 ms timeout directly after this command also works.
             });
             console.log(output);
         });
 
+        // Clear cached auth after reset
         cachedManagerAuth = undefined;
         cachedStudentAuth = undefined;
     },
