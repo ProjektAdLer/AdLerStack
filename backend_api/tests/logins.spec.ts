@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { test } from './libs/testcase_with_credentials';
+import { test } from './libs/enhanced_test';
 
 test.beforeAll(async ({ resetEnvironment }) => {
     await resetEnvironment();

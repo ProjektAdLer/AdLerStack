@@ -2,7 +2,7 @@ import {readFileSync} from "fs";
 import * as path from "path";
 import {expect} from '@playwright/test';
 import {enrollInMoodleCourse} from "./libs/moodle_helpers";
-import {test} from "./libs/testcase_with_credentials";
+import {test} from "./libs/enhanced_test";
 
 test.describe.serial('Play world', () => {
     let worldId: number;

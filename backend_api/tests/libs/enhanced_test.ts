@@ -46,25 +46,30 @@ let cachedStudentAuth: AuthData | undefined;
 
 const test = baseTest.extend<ManagerAuthFixture & StudentAuthFixture & { resetEnvironment: () => Promise<void> }>({
     resetEnvironment: async ({}, use, testInfo) => {
-        const currentTimeout = testInfo.timeout;
-        testInfo.setTimeout(currentTimeout + 90000);
+        const resetFn = async () => {
+            const currentTimeout = testInfo.timeout;
+            testInfo.setTimeout(currentTimeout + 90000);
 
-        await use(async () => {
             if (process.platform !== 'linux') {
                 throw new Error('Environment reset is only supported on Linux');
             }
             console.log('Resetting environment. This will take around half a minute...');
+
             const output = execSync('./docker-volumes-snapshot.sh restore 2>&1', {
                 encoding: 'utf-8',
                 cwd: '..',
-                timeout: 90000 // This is crucial! Without it there is a strange timing issue with subsequent stuff in the same test/beforeX block. Alternatively a 1 ms timeout directly after this command also works.
             });
             console.log(output);
-        });
 
-        // Clear cached auth after reset
-        cachedManagerAuth = undefined;
-        cachedStudentAuth = undefined;
+            // This is crucial! Without it there is a strange timing issue with subsequent stuff in the same test/beforeX block.
+            await new Promise(resolve => setTimeout(resolve, 1));
+
+            // Clear cached auth after reset
+            cachedManagerAuth = undefined;
+            cachedStudentAuth = undefined;
+        };
+
+        await use(resetFn);
     },
 
     managerAuth: async ({ request }, use) => {

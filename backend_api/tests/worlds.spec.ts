@@ -1,7 +1,7 @@
 import {expect} from '@playwright/test';
 import * as path from 'path';
 import {readFileSync} from 'fs';
-import {test} from "./libs/testcase_with_credentials";
+import {test} from "./libs/enhanced_test";
 
 
 test.describe.serial('World lifecycle', () => {
