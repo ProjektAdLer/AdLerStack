@@ -72,7 +72,7 @@ const test = baseTest.extend<ManagerAuthFixture & StudentAuthFixture & { resetEn
             }
 
             // This is crucial! Without it there is a strange timing issue with subsequent stuff in the same test/beforeX block.
-            await new Promise(resolve => setTimeout(resolve, 1));
+            await new Promise(resolve => setTimeout(resolve, 100));
 
             // Clear cached auth after reset
             cachedManagerAuth = undefined;
