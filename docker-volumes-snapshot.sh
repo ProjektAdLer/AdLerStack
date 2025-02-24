@@ -7,6 +7,12 @@ if [ "$MODE" != "snapshot" ] && [ "$MODE" != "restore" ]; then
   exit 1
 fi
 
+# Check if Docker is installed
+if ! docker info &> /dev/null; then
+  echo "Error: Docker is either not installed, not running, or requires sudo."
+  exit 1
+fi
+
 PROJECT_NAME=$(docker compose config --format json | jq -r '.name')
 BACKUP_VOLUME="${PROJECT_NAME}_backup"
 
@@ -56,6 +62,7 @@ else
       sh -c '
         if [ ! -f "/backup/$1.zst" ]; then
           echo "ERROR: Backup file not found for volume: $1"
+          echo "Did you take a snapshot before restoring?"
           exit 1
         fi
         rm -rf /target/* /target/..?* /target/.[!.]*
