@@ -1,4 +1,9 @@
-import {expect, test} from '@playwright/test';
+import {expect} from '@playwright/test';
+import {test} from './libs/enhanced_test';
+
+test.beforeAll(async ({ resetEnvironment }) => {
+    await resetEnvironment();
+});
 
 test('test', async ({page}) => {
     await page.goto('/');
