@@ -9,7 +9,7 @@
     "evaluationLink": "",
     "enrolmentKey": "",
     "worldName": "testwelt",
-    "worldUUID": "8f9c16b2-d8d9-4470-970c-775e503eef4e",
+    "worldUUID": "95e16ff0-f85a-4f2f-90ad-e16dd0cea8df",
     "worldDescription": "",
     "worldGoals": [
       ""
@@ -25,9 +25,9 @@
           "outroStory": null
         },
         "spaceName": "testraum",
-        "requiredPointsToComplete": 0,
+        "requiredPointsToComplete": 2,
         "spaceId": 1,
-        "spaceUUID": "b0a5f906-585c-40eb-9428-20a7ddb98676",
+        "spaceUUID": "8fada1da-f4d7-48f9-aae7-9edca49c65ea",
         "spaceDescription": "",
         "spaceSlotContents": [
           1,
@@ -38,6 +38,31 @@
           null
         ],
         "requiredSpacesToEnter": "",
+        "spaceTemplate": "R_20X20_6L",
+        "spaceTemplateStyle": "CampusAschaffenburg"
+      },
+      {
+        "$type": "LearningSpace",
+        "spaceGoals": [],
+        "spaceStory": {
+          "$type": "SimpleSpaceStory",
+          "introStory": null,
+          "outroStory": null
+        },
+        "spaceName": "testraum2",
+        "requiredPointsToComplete": 1,
+        "spaceId": 2,
+        "spaceUUID": "53b441bd-db01-4e81-9244-1739157c31cf",
+        "spaceDescription": "",
+        "spaceSlotContents": [
+          3,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "requiredSpacesToEnter": "1",
         "spaceTemplate": "R_20X20_6L",
         "spaceTemplateStyle": "CampusAschaffenburg"
       }
@@ -80,7 +105,7 @@
             {
               "$type": "adaptivityTask",
               "taskId": 1,
-              "taskUUID": "b21cce56-93a5-434f-8a6a-e18c90fc748f",
+              "taskUUID": "c1e3bad9-db13-45e8-9d6d-3059263b29a2",
               "taskTitle": "Neue Aufgabe 1",
               "optional": false,
               "requiredDifficulty": 100,
@@ -89,7 +114,7 @@
                   "$type": "adaptivityQuestion",
                   "questionType": "singleResponse",
                   "questionId": 1,
-                  "questionUUID": "c2658eca-1f5e-47e9-a052-c638c3a6fef8",
+                  "questionUUID": "ac525937-0dd3-45a6-9e31-7e64936db61d",
                   "questionDifficulty": 100,
                   "questionText": "frage",
                   "adaptivityRules": [],
@@ -110,6 +135,22 @@
             }
           ]
         }
+      },
+      {
+        "$type": "LearningElement",
+        "elementDescription": "",
+        "elementGoals": [
+          ""
+        ],
+        "elementMaxScore": 1,
+        "elementModel": "l_random",
+        "learningSpaceParentId": 2,
+        "url": "",
+        "elementId": 3,
+        "elementUUID": "df84cdb5-6d2e-47d6-b18b-6cffbea3b727",
+        "elementName": "testElement",
+        "elementCategory": "text",
+        "elementFileType": "txt"
       }
     ]
   }

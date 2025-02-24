@@ -8,13 +8,14 @@ test.describe.serial('Play world', () => {
     let worldId: number;
     let learningElementId: number;
     let adaptivityElementId: number;
+    let elementInRoom2Id: number;
 
-    test.beforeAll(async ({ request, managerAuth, resetEnvironment }) => {
+    test.beforeAll(async ({request, managerAuth, resetEnvironment}) => {
         await resetEnvironment();
 
         // Upload world as manager
         const uploadResponse = await request.post('/api/Worlds', {
-            headers: { 'token': (await managerAuth()).token },
+            headers: {'token': (await managerAuth()).token},
             multipart: {
                 backupFile: {
                     name: 'testwelt.mbz',
@@ -44,7 +45,7 @@ test.describe.serial('Play world', () => {
 
     test('Student can see enrolled world', async ({request, studentAuth}) => {
         const response = await request.get('/api/Worlds', {
-            headers: { 'token': (await studentAuth()).token }
+            headers: {'token': (await studentAuth()).token}
         });
         expect(response.ok(), 'Getting world list failed').toBeTruthy();
         const worlds = (await response.json()).worlds;
@@ -60,14 +61,17 @@ test.describe.serial('Play world', () => {
         expect(atf.world.worldName, 'ATF file has no world name').toBeTruthy();
 
         // Find and store element IDs from ATF
-        const normalElement = atf.world.elements.find(e => e.elementCategory === 'text');
-        const adaptivityElement = atf.world.elements.find(e => e.elementCategory === 'adaptivity');
+        // We find the element by name for now, but this is not ideal
+        const normalElement = atf.world.elements.find(e => e.elementName === 'test_LE');
+        const adaptivityElement = atf.world.elements.find(e => e.elementName === 'adaptivitaet');
+        const elementInRoom2 = atf.world.elements.find(e => e.elementName === 'testElement');
 
         expect(normalElement, 'Learning element not found in ATF').toBeTruthy();
         expect(adaptivityElement, 'Adaptivity element not found in ATF').toBeTruthy();
 
         learningElementId = normalElement.elementId;
         adaptivityElementId = adaptivityElement.elementId;
+        elementInRoom2Id = elementInRoom2.elementId;
     });
 
     test('Student can get world status', async ({request, studentAuth}) => {
@@ -80,7 +84,7 @@ test.describe.serial('Play world', () => {
         expect(Array.isArray(status.elements), 'Status response missing elements array').toBeTruthy();
     });
 
-    test('Student can get element file paths and access files', async ({request, studentAuth}) => {
+    test('Student can get element file paths and access files of element in Room 1', async ({request, studentAuth}) => {
         // Test regular learning element
         const pathResponse = await request.get(
             `/api/Elements/FilePath/World/${worldId}/Element/${learningElementId}`,
@@ -99,6 +103,21 @@ test.describe.serial('Play world', () => {
         expect(fileResponse.ok(), `Accessing file for learning element failed`).toBeTruthy();
         const fileContent = await fileResponse.text();
         expect(fileContent, `File content doesn't match expected value`).toBe('test');
+    });
+
+    test("Student can NOT get element file paths and access files of element in Room 2", async ({
+                                                                                                    request,
+                                                                                                    studentAuth
+                                                                                                }) => {
+
+        const pathResponse = await request.get(
+            `/api/Elements/FilePath/World/${worldId}/Element/${elementInRoom2Id}`,
+            {
+                headers: {'token': (await studentAuth()).token}
+            }
+        );
+        expect(pathResponse.status(), `Element 2 in Room 2 is supposed to be locken, but fround to be open`).toBe(403);
+
     });
 
     test('Student can complete learning element', async ({request, studentAuth}) => {
@@ -206,6 +225,26 @@ test.describe.serial('Play world', () => {
         expect(adaptivityScoreAfterCompletion.ok(), 'Getting initial adaptivity element score failed').toBeTruthy();
         const adaptivityScoreAfterCompletionValue = await adaptivityScoreAfterCompletion.json();
         expect(adaptivityScoreAfterCompletionValue.success, 'Adaptivity element should be incomplete initially').toBeTruthy();
+    });
+
+    test("Element 2 in Room 2 sould now be accessible", async ({request, studentAuth}) => {
+        const pathResponse = await request.get(
+            `/api/Elements/FilePath/World/${worldId}/Element/${elementInRoom2Id}`,
+            {
+                headers: {'token': (await studentAuth()).token}
+            }
+        );
+        expect(pathResponse.ok(), `Getting file path for element in Room 2 failed`).toBeTruthy();
+        const pathData = await pathResponse.json();
+        expect(pathData.filePath, `No URL returned for element in Room 2`).toBeTruthy();
+
+        // Access the element file
+        const fileResponse = await request.get(pathData.filePath, {
+            headers: {'token': (await studentAuth()).token}
+        });
+        expect(fileResponse.ok(), `Accessing file for element in Room 2 failed`).toBeTruthy();
+        const fileContent = await fileResponse.text();
+        expect(fileContent, `File content doesn't match expected value`).toBe('test');
     });
 
     test.afterAll(async ({request, managerAuth}) => {
