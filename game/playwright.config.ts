@@ -15,9 +15,6 @@ dotenvExpand.expand(myEnv);
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-    /* allows to only run tests marked as safe */
-    grep: process.env.TEST_ENV === 'live' ? /@safe/ : /.*/,
-
     /* Do not retry and fail on first error. This is because of how AMG tests (currently) work */
     retries: 0,
     maxFailures: 1,
