@@ -25,15 +25,16 @@ To simplify mainting the docker compose.yml files this project uses the followin
 Use the following commands to start/stop/pull the docker containers:
 
 - start:
-  `docker compose -f docker compose.base.yml -f docker compose.test-adjustments.yml up -d --build --force-recreate --wait`
-- stop: `docker compose -f docker compose.base.yml -f docker compose.test-adjustments.yml down`
-- pull: `docker compose -f docker compose.base.yml -f docker compose.test-adjustments.yml pull`
+  `docker compose -f docker-compose.base.yml -f docker-compose.test-adjustments.yml up -d --build --force-recreate --wait`
+- stop: `docker compose -f docker-compose.base.yml -f docker-compose.test-adjustments.yml down`
+- pull: `docker compose -f docker-compose.base.yml -f docker-compose.test-adjustments.yml pull`
 
 You can generate the combined docker compose.yml file with the following command:
+
 > [!WARNING]
 > You have to manually update the docker compose.yml after every pull or change to the source files.
 
-- `docker compose -f docker compose.base.yml -f docker compose.test-adjustments.yml config > docker compose.yml`
+- `docker compose -f docker-compose.base.yml -f docker-compose.test-adjustments.yml config > docker-compose.yml`
 
 ## Additional, less relevant information
 

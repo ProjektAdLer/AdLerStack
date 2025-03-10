@@ -66,7 +66,7 @@ services:
       timeout: 5s
 
   backend:
-    image: ghcr.io/projektadler/adlerbackend:2.4.2-rc.4
+    image: ghcr.io/projektadler/adlerbackend:2.4.2-rc.5
     ports:
       - '${_PORT_BACKEND}:80'
     environment:
@@ -88,7 +88,7 @@ services:
       - ${_DOMAIN}:host-gateway
 
   frontend:
-    image: ghcr.io/projektadler/2d_3d_adler:2.5.1
+    image: ghcr.io/projektadler/2d_3d_adler:2.8.0
     ports:
       - '${_PORT_3D}:80'
     environment:
