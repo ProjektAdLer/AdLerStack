@@ -48,6 +48,7 @@ export default defineConfig({
                     headless: false,
                     args: [
                         '--ignore-gpu-blocklist',
+                        '--window-size=1920,1080'
                     ],
                 },
             },
