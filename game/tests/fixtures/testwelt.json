@@ -1,0 +1,157 @@
+{
+  "$type": "ATF",
+  "fileVersion": "2.3.0",
+  "amgVersion": "2.2.2",
+  "author": "",
+  "language": "de",
+  "world": {
+    "$type": "LearningWorld",
+    "evaluationLink": "",
+    "enrolmentKey": "",
+    "worldName": "testwelt",
+    "worldUUID": "95e16ff0-f85a-4f2f-90ad-e16dd0cea8df",
+    "worldDescription": "",
+    "worldGoals": [
+      ""
+    ],
+    "topics": [],
+    "spaces": [
+      {
+        "$type": "LearningSpace",
+        "spaceGoals": [],
+        "spaceStory": {
+          "$type": "SimpleSpaceStory",
+          "introStory": null,
+          "outroStory": null
+        },
+        "spaceName": "testraum",
+        "requiredPointsToComplete": 2,
+        "spaceId": 1,
+        "spaceUUID": "8fada1da-f4d7-48f9-aae7-9edca49c65ea",
+        "spaceDescription": "",
+        "spaceSlotContents": [
+          1,
+          null,
+          null,
+          null,
+          2,
+          null
+        ],
+        "requiredSpacesToEnter": "",
+        "spaceTemplate": "R_20X20_6L",
+        "spaceTemplateStyle": "CampusAschaffenburg"
+      },
+      {
+        "$type": "LearningSpace",
+        "spaceGoals": [],
+        "spaceStory": {
+          "$type": "SimpleSpaceStory",
+          "introStory": null,
+          "outroStory": null
+        },
+        "spaceName": "testraum2",
+        "requiredPointsToComplete": 1,
+        "spaceId": 2,
+        "spaceUUID": "53b441bd-db01-4e81-9244-1739157c31cf",
+        "spaceDescription": "",
+        "spaceSlotContents": [
+          3,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "requiredSpacesToEnter": "1",
+        "spaceTemplate": "R_20X20_6L",
+        "spaceTemplateStyle": "CampusAschaffenburg"
+      }
+    ],
+    "elements": [
+      {
+        "$type": "LearningElement",
+        "elementDescription": "",
+        "elementGoals": [
+          ""
+        ],
+        "elementMaxScore": 1,
+        "elementModel": "l_random",
+        "learningSpaceParentId": 1,
+        "url": "",
+        "elementId": 1,
+        "elementUUID": "f734f354-6b0a-4102-a19d-57ab6f151146",
+        "elementName": "test_LE",
+        "elementCategory": "text",
+        "elementFileType": "txt"
+      },
+      {
+        "$type": "AdaptivityElement",
+        "elementId": 2,
+        "elementUUID": "b228a001-d5a6-4298-9321-56270b476465",
+        "elementName": "adaptivitaet",
+        "elementDescription": "",
+        "elementGoals": [
+          ""
+        ],
+        "elementCategory": "adaptivity",
+        "elementFileType": "adaptivity",
+        "elementMaxScore": 1,
+        "elementModel": "a_npc_alerobot",
+        "learningSpaceParentId": 1,
+        "adaptivityContent": {
+          "$type": "adaptivityContent",
+          "introText": "",
+          "adaptivityTasks": [
+            {
+              "$type": "adaptivityTask",
+              "taskId": 1,
+              "taskUUID": "c1e3bad9-db13-45e8-9d6d-3059263b29a2",
+              "taskTitle": "Neue Aufgabe 1",
+              "optional": false,
+              "requiredDifficulty": 100,
+              "adaptivityQuestions": [
+                {
+                  "$type": "adaptivityQuestion",
+                  "questionType": "singleResponse",
+                  "questionId": 1,
+                  "questionUUID": "ac525937-0dd3-45a6-9e31-7e64936db61d",
+                  "questionDifficulty": 100,
+                  "questionText": "frage",
+                  "adaptivityRules": [],
+                  "choices": [
+                    {
+                      "$type": "AdaptivityQuestionAnswer",
+                      "answerText": "richtig",
+                      "isCorrect": true
+                    },
+                    {
+                      "$type": "AdaptivityQuestionAnswer",
+                      "answerText": "falsch",
+                      "isCorrect": false
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "$type": "LearningElement",
+        "elementDescription": "",
+        "elementGoals": [
+          ""
+        ],
+        "elementMaxScore": 1,
+        "elementModel": "l_random",
+        "learningSpaceParentId": 2,
+        "url": "",
+        "elementId": 3,
+        "elementUUID": "df84cdb5-6d2e-47d6-b18b-6cffbea3b727",
+        "elementName": "testElement",
+        "elementCategory": "text",
+        "elementFileType": "txt"
+      }
+    ]
+  }
+}
