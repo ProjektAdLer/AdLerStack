@@ -2,10 +2,21 @@
 
 import {test as baseTest, expect} from '@playwright/test';
 import {execSync} from 'child_process';
+import {readFileSync} from 'fs';
+import * as path from 'path';
 
 type AuthData = {
     token: string;
     userId: number;
+};
+
+type WorldUploadResult = {
+    worldId: number;
+    worldNameInLms: string;
+};
+
+type UploadWorldFixture = {
+    uploadWorld: (worldFileName: string) => Promise<WorldUploadResult>;
 };
 
 type ManagerAuthFixture = {
@@ -43,7 +54,44 @@ async function loginAndFetchUser(
 let cachedManagerAuth: AuthData | undefined;
 let cachedStudentAuth: AuthData | undefined;
 
-const test = baseTest.extend<ManagerAuthFixture & StudentAuthFixture & { resetEnvironment: () => Promise<void> }>({
+const test = baseTest.extend<
+    UploadWorldFixture &
+    ManagerAuthFixture &
+    StudentAuthFixture &
+    { resetEnvironment: () => Promise<void> }
+>({
+    uploadWorld: async ({request, managerAuth}, use) => {
+        await use(async (worldFileName: string) => {
+            // Get base name without extension
+            const baseFileName = path.basename(worldFileName, path.extname(worldFileName));
+
+            // Build file paths
+            const mbzFilePath = path.join(__dirname, '..', 'fixtures', `${baseFileName}.mbz`);
+            const awfFilePath = path.join(__dirname, '..', 'fixtures', `${baseFileName}.json`);
+
+            // Upload world as manager
+            const uploadResponse = await request.post(`http://${process.env._URL_BACKEND}/api/Worlds`, {
+                headers: {'token': (await managerAuth()).token},
+                multipart: {
+                    backupFile: {
+                        name: `${baseFileName}.mbz`,
+                        mimeType: 'application/octet-stream',
+                        buffer: readFileSync(mbzFilePath)
+                    },
+                    atfFile: {
+                        name: `${baseFileName}.awf`,
+                        mimeType: 'application/json',
+                        buffer: readFileSync(awfFilePath)
+                    }
+                }
+            });
+
+            console.log('Upload response:', await uploadResponse.text());
+            expect(uploadResponse.ok(), 'World upload failed').toBeTruthy();
+            return await uploadResponse.json();
+        });
+    },
+
     resetEnvironment: async ({}, use, testInfo) => {
         const resetFn = async () => {
             const currentTimeout = testInfo.timeout;
@@ -82,7 +130,7 @@ const test = baseTest.extend<ManagerAuthFixture & StudentAuthFixture & { resetEn
         await use(resetFn);
     },
 
-    managerAuth: async ({ request }, use) => {
+    managerAuth: async ({request}, use) => {
         await use(async () => {
             if (!cachedManagerAuth) {
                 cachedManagerAuth = await loginAndFetchUser(
@@ -95,7 +143,7 @@ const test = baseTest.extend<ManagerAuthFixture & StudentAuthFixture & { resetEn
         });
     },
 
-    studentAuth: async ({ request }, use) => {
+    studentAuth: async ({request}, use) => {
         await use(async () => {
             if (!cachedStudentAuth) {
                 cachedStudentAuth = await loginAndFetchUser(

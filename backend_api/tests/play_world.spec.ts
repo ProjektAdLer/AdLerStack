@@ -10,28 +10,10 @@ test.describe.serial('Play world', () => {
     let adaptivityElementId: number;
     let elementInRoom2Id: number;
 
-    test.beforeAll(async ({request, managerAuth, resetEnvironment}) => {
+    test.beforeAll(async ({request, resetEnvironment, uploadWorld}) => {
         await resetEnvironment();
 
-        // Upload world as manager
-        const uploadResponse = await request.post('/api/Worlds', {
-            headers: {'token': (await managerAuth()).token},
-            multipart: {
-                backupFile: {
-                    name: 'testwelt.mbz',
-                    mimeType: 'application/octet-stream',
-                    buffer: readFileSync(path.join(__dirname, 'fixtures', 'testwelt.mbz'))
-                },
-                atfFile: {
-                    name: 'testwelt.awf',
-                    mimeType: 'application/json',
-                    buffer: readFileSync(path.join(__dirname, 'fixtures', 'testwelt.json'))
-                }
-            }
-        });
-        console.log('Upload response:', await uploadResponse.text());
-        expect(uploadResponse.ok(), 'World upload failed').toBeTruthy();
-        const result = await uploadResponse.json();
+        const result = await uploadWorld('testwelt');
         worldId = result.worldId;
 
         // Enroll student
