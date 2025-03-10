@@ -2,6 +2,7 @@
 
 import {test as baseTest, expect} from '@playwright/test';
 import {execSync} from 'child_process';
+import {platform} from 'os';
 
 type AuthData = {
     token: string;
@@ -49,17 +50,26 @@ const test = baseTest.extend<ManagerAuthFixture & StudentAuthFixture & { resetEn
             const currentTimeout = testInfo.timeout;
             testInfo.setTimeout(currentTimeout + 90000);
 
-            if (process.platform !== 'linux') {
-                throw new Error('Environment reset is only supported on Linux');
-            }
             console.log('Resetting environment. This will take around half a minute...');
 
             try {
-                const output = execSync('./docker-volumes-snapshot.sh restore 2>&1', {
-                    encoding: 'utf-8',
-                    cwd: '..',
-                    stdio: ['inherit', 'pipe', 'pipe'],
-                });
+                let output;
+                const isWindows = platform() === 'win32';
+                
+                if (isWindows) {
+                    output = execSync('powershell -ExecutionPolicy Bypass -File ..\\docker-volumes-snapshot-windows.ps1 restore', {
+                        encoding: 'utf-8',
+                        cwd: '.',
+                        stdio: ['inherit', 'pipe', 'pipe'],
+                    });
+                } else {
+                    // Linux/macOS
+                    output = execSync('./docker-volumes-snapshot.sh restore', {
+                        encoding: 'utf-8',
+                        cwd: '..',
+                        stdio: ['inherit', 'pipe', 'pipe'],
+                    });
+                }
                 console.log('Script output:', output);
             } catch (error) {
                 console.error('Error details:', {
