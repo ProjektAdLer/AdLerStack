@@ -18,6 +18,3 @@ services:
       - "${_PORT_AUTHORING_TOOL:-8001}:8002"
     extra_hosts:
       - ${_DOMAIN}:host-gateway
-
-  frontend:
-    image: ghcr.io/projektadler/2d_3d_adler:e2ev1
