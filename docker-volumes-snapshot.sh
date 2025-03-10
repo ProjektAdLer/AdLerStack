@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+if ! command -v jq &> /dev/null; then
+    sudo apt update && sudo apt install -y jq
+fi
+
 MODE="$1"
 if [ "$MODE" != "snapshot" ] && [ "$MODE" != "restore" ]; then
   echo "Usage: $0 [snapshot|restore]"
@@ -15,10 +19,6 @@ fi
 
 PROJECT_NAME=$(docker compose config --format json | jq -r '.name')
 BACKUP_VOLUME="${PROJECT_NAME}_backup"
-
-if ! command -v jq &> /dev/null; then
-    sudo apt update && sudo apt install -y jq
-fi
 
 docker build -f Dockerfile-backup-image -t alpine-zstd .
 
