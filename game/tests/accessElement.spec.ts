@@ -23,12 +23,12 @@ test.describe.serial("Access a Learning Element in 3D", () => {
         );
     });
 
-    // empty test to trigge the beforeAll
+    // empty test to trigger the beforeAll
     test('empty test', async () => {
         expect(true).toBeTruthy();
     });
 
-    test('Student can Acces first Learning Element in the Room', async ({page}) => {
+    test('Student can Access first Learning Element in the Room', async ({page}) => {
         // So kommt man zu dem "BaseUrl", welche in den Projekteinstellungen gesetzt wurde. In unserem Fall die AdLer
         // Engine
         await page.goto('/');
