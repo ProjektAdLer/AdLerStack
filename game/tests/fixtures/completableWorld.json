@@ -1,0 +1,198 @@
+{
+  "$type": "ATF",
+  "fileVersion": "2.3.0",
+  "amgVersion": "2.2.3",
+  "author": "",
+  "language": "de",
+  "world": {
+    "$type": "LearningWorld",
+    "evaluationLink": "",
+    "enrolmentKey": "",
+    "worldName": "completableWorld",
+    "worldUUID": "b04d9448-fe4b-482b-9393-8790c5303a73",
+    "worldDescription": "",
+    "worldGoals": [
+      ""
+    ],
+    "topics": [],
+    "spaces": [
+      {
+        "$type": "LearningSpace",
+        "spaceGoals": [],
+        "spaceStory": {
+          "$type": "SimpleSpaceStory",
+          "introStory": null,
+          "outroStory": null
+        },
+        "spaceName": "room1a",
+        "requiredPointsToComplete": 2,
+        "spaceId": 1,
+        "spaceUUID": "57539fa0-79b9-4b71-928a-11c59f343c00",
+        "spaceDescription": "",
+        "spaceSlotContents": [
+          1,
+          2,
+          null,
+          null,
+          null,
+          null
+        ],
+        "requiredSpacesToEnter": "",
+        "spaceTemplate": "R_20X20_6L",
+        "spaceTemplateStyle": "CampusAschaffenburg"
+      },
+      {
+        "$type": "LearningSpace",
+        "spaceGoals": [],
+        "spaceStory": {
+          "$type": "SimpleSpaceStory",
+          "introStory": null,
+          "outroStory": null
+        },
+        "spaceName": "room1b",
+        "requiredPointsToComplete": 1,
+        "spaceId": 2,
+        "spaceUUID": "7333916c-43a6-474d-bd49-234ae7add9d3",
+        "spaceDescription": "",
+        "spaceSlotContents": [
+          3,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "requiredSpacesToEnter": "",
+        "spaceTemplate": "R_20X20_6L",
+        "spaceTemplateStyle": "CampusAschaffenburg"
+      },
+      {
+        "$type": "LearningSpace",
+        "spaceGoals": [],
+        "spaceStory": {
+          "$type": "SimpleSpaceStory",
+          "introStory": null,
+          "outroStory": null
+        },
+        "spaceName": "room 2",
+        "requiredPointsToComplete": 0,
+        "spaceId": 3,
+        "spaceUUID": "3ca3c84c-f76f-4af5-8397-f1a47567ff47",
+        "spaceDescription": "",
+        "spaceSlotContents": [
+          4,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "requiredSpacesToEnter": "(1)^(2)",
+        "spaceTemplate": "R_20X20_6L",
+        "spaceTemplateStyle": "CampusAschaffenburg"
+      }
+    ],
+    "elements": [
+      {
+        "$type": "LearningElement",
+        "elementDescription": "",
+        "elementGoals": [
+          ""
+        ],
+        "elementMaxScore": 1,
+        "elementModel": "l_random",
+        "learningSpaceParentId": 1,
+        "url": "",
+        "elementId": 1,
+        "elementUUID": "1e7e40c7-b922-4cef-9845-eb6431b40ca1",
+        "elementName": "Element 1 1 Point",
+        "elementCategory": "image",
+        "elementFileType": "jpg"
+      },
+      {
+        "$type": "LearningElement",
+        "elementDescription": "",
+        "elementGoals": [
+          ""
+        ],
+        "elementMaxScore": 1,
+        "elementModel": "l_random",
+        "learningSpaceParentId": 1,
+        "url": "",
+        "elementId": 2,
+        "elementUUID": "baac3562-d801-4e6b-b53f-9187e73d8dba",
+        "elementName": "Element 2 1 Point",
+        "elementCategory": "image",
+        "elementFileType": "jpg"
+      },
+      {
+        "$type": "AdaptivityElement",
+        "elementId": 3,
+        "elementUUID": "e14ba817-2e01-4478-b3ca-9e3d8c4bca2c",
+        "elementName": "adaptivityElement",
+        "elementDescription": "",
+        "elementGoals": [
+          ""
+        ],
+        "elementCategory": "adaptivity",
+        "elementFileType": "adaptivity",
+        "elementMaxScore": 1,
+        "elementModel": "a_npc_alerobot",
+        "learningSpaceParentId": 2,
+        "adaptivityContent": {
+          "$type": "adaptivityContent",
+          "introText": "",
+          "adaptivityTasks": [
+            {
+              "$type": "adaptivityTask",
+              "taskId": 1,
+              "taskUUID": "0091d68e-1a6b-4445-bf23-58abf97a7940",
+              "taskTitle": "AdLer",
+              "optional": false,
+              "requiredDifficulty": 100,
+              "adaptivityQuestions": [
+                {
+                  "$type": "adaptivityQuestion",
+                  "questionType": "multipleResponse",
+                  "questionId": 1,
+                  "questionUUID": "58603be1-f723-4af9-a70a-81a7dba98bda",
+                  "questionDifficulty": 100,
+                  "questionText": "Wer ist der coolste",
+                  "adaptivityRules": [],
+                  "choices": [
+                    {
+                      "$type": "AdaptivityQuestionAnswer",
+                      "answerText": "Filipp",
+                      "isCorrect": false
+                    },
+                    {
+                      "$type": "AdaptivityQuestionAnswer",
+                      "answerText": "Philipp",
+                      "isCorrect": true
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "$type": "LearningElement",
+        "elementDescription": "",
+        "elementGoals": [
+          ""
+        ],
+        "elementMaxScore": 1,
+        "elementModel": "l_random",
+        "learningSpaceParentId": 3,
+        "url": "",
+        "elementId": 4,
+        "elementUUID": "807533bb-5c6b-439f-9643-9b33771dcc33",
+        "elementName": "element 3",
+        "elementCategory": "image",
+        "elementFileType": "jpg"
+      }
+    ]
+  }
+}
