@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "playwright test",
-    "test:live": "TEST_ENV=live playwright test"
+    "test": "playwright test"
   },
   "keywords": [],
   "author": "",
