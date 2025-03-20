@@ -1,6 +1,6 @@
 import {expect} from "@playwright/test";
 import {test} from "./libs/enhanced_test";
-import path from "path";
+import * as path from 'path';
 import {execSync} from "child_process";
 
 test.describe.serial("Complete a Learning World", () => {
