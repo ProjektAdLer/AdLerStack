@@ -34,8 +34,9 @@ test.describe.serial("Access a Learning Element in 3D", () => {
         await page.goto('/');
         // All das wurde von dem Codegenerator erstellt
         await page.setViewportSize({width: 1920, height: 1080});
-        await page.getByTestId('userName').fill('integration_test_student');
-        await page.getByTestId('password').fill('Student1234!1234');
+        // Benutzername und Passwort aus den Umgebungsvariablen setzen
+        await page.getByTestId('userName').fill(process.env._PLAYWRIGHT_USER_STUDENT_USERNAME!);
+        await page.getByTestId('password').fill(process.env._USER_STUDENT_PW!);
         await page.getByTestId('loginButton').click();
         await page.getByRole('button').filter({hasText: /^$/}).nth(1).click();
         await page.getByRole('button', {name: 'testwelt'}).click();

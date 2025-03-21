@@ -98,13 +98,13 @@ test.describe.serial("Complete a Learning World", () => {
 
         test('Login as student', async () => {
             await sharedPage.goto(`http://${process.env._URL_MOODLE}/`);
-            await sharedPage.waitForTimeout(2000);
-
             await sharedPage.getByRole('link', {name: 'Log in'}).click();
             await sharedPage.getByRole('textbox', {name: 'Username'}).click();
             await sharedPage.getByRole('textbox', {name: 'Username'}).fill(process.env._PLAYWRIGHT_USER_STUDENT_USERNAME);
             await sharedPage.locator('input[type="password"]').click();
             await sharedPage.locator('input[type="password"]').fill(process.env._USER_STUDENT_PW);
+            // await page.getByTestId('userName').fill(process.env._PLAYWRIGHT_USER_STUDENT_USERNAME!);
+            // await page.getByTestId('password').fill(process.env._USER_STUDENT_PW!);
             await sharedPage.getByRole('button', {name: 'Log in'}).click();
 
             // Wait for login to complete by checking for a user-specific element
