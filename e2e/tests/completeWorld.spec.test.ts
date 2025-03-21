@@ -70,7 +70,6 @@ test.describe.serial("Complete a Learning World", () => {
         });
 
         test.afterAll(async ({}, testInfo) => {
-            const savedPath = testInfo.outputPath(`video.webm`);
             // Close the shared context when done
             await sharedPage?.close();
             await sharedContext?.close();
@@ -121,7 +120,6 @@ test.describe.serial("Complete a Learning World", () => {
         });
 
         test.afterAll(async ({}, testInfo) => {
-            const savedPath = testInfo.outputPath(`video.webm`);
             // Close the shared context when done
             await sharedPage?.close();
             await sharedContext?.close();
