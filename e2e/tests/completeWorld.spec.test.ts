@@ -66,16 +66,34 @@ test.describe.serial("Complete a Learning World", () => {
                     dir: testInfo.outputPath('video.webm'),
                 }
             });
+            await sharedContext.tracing.start({
+                screenshots: true,
+                snapshots: true,
+                sources: true
+            });
+
             sharedPage = await sharedContext.newPage();
         });
 
         test.afterAll(async ({}, testInfo) => {
+            // Stop tracing and save the trace file
+            await sharedContext.tracing.stop({
+                path: testInfo.outputPath('trace.zip')
+            });
+
             // Close the shared context when done
             await sharedPage?.close();
             await sharedContext?.close();
 
             const path = await sharedPage.video()!.path();
             testInfo.attachments.push({ name: 'video', path, contentType: 'video/webm' });
+
+            // Add trace as attachment
+            testInfo.attachments.push({
+                name: 'trace',
+                path: testInfo.outputPath('trace.zip'),
+                contentType: 'application/zip'
+            });
         });
 
         test('Login as student', async () => {
@@ -85,6 +103,8 @@ test.describe.serial("Complete a Learning World", () => {
             await sharedPage.getByRole('textbox', {name: 'Username'}).fill(process.env._PLAYWRIGHT_USER_STUDENT_USERNAME);
             await sharedPage.locator('input[type="password"]').click();
             await sharedPage.locator('input[type="password"]').fill(process.env._USER_STUDENT_PW);
+            // await page.getByTestId('userName').fill(process.env._PLAYWRIGHT_USER_STUDENT_USERNAME!);
+            // await page.getByTestId('password').fill(process.env._USER_STUDENT_PW!);
             await sharedPage.getByRole('button', {name: 'Log in'}).click();
 
             // Wait for login to complete by checking for a user-specific element
