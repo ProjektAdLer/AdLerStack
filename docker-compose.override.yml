@@ -2,7 +2,6 @@ name: adler_e2e_tests  # this name is referenced in some tests (temporary workar
 
 services:
   moodle:
-    image: ghcr.io/projektadler/adler-moodle:main-moodle-4.5
     environment:
       DECLARATIVE_SETUP_INTEGRATION_TEST_MANAGER_PASSWORD: ${_USER_MANAGER_PW}
       DECLARATIVE_SETUP_INTEGRATION_TEST_STUDENT_PASSWORD: ${_USER_STUDENT_PW}

@@ -1,6 +1,6 @@
 services:
   moodle:
-    image: ghcr.io/projektadler/adler-moodle:6.0-moodle-4.5
+    image: ghcr.io/projektadler/adler-moodle:6.2.0-moodle-4.5
     ports:
       - '${_PORT_MOODLE}:8080'
     environment:
@@ -24,10 +24,6 @@ services:
     depends_on:
       - db_moodle
     restart: unless-stopped
-    # todo: remove this healthcheck after next image release
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8080" ]
-      start_period: 10m
 
   db_moodle:
     image: docker.io/bitnami/mariadb:10.11
@@ -66,7 +62,7 @@ services:
       timeout: 5s
 
   backend:
-    image: ghcr.io/projektadler/adlerbackend:2.4.2-rc.5
+    image: ghcr.io/projektadler/adlerbackend:2.4.2
     ports:
       - '${_PORT_BACKEND}:80'
     environment:
@@ -97,24 +93,6 @@ services:
       API_URL: 'http://${_URL_BACKEND}/api'
       MOODLE_URL: "http://${_URL_MOODLE}"
     restart: unless-stopped
-    # todo: remove this healthcheck after next image release
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost" ]
-      start_period: 30s
-
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    environment:
-      PMA_HOSTS: db_moodle,db_backend
-      PMA_PORT: 3306
-      PMA_USER: root
-      PMA_PASSWORD: ${_DB_ROOT_PW}
-    restart: unless-stopped
-    depends_on:
-      # - db_backend
-      - db_moodle
-    ports:
-      - '38088:80'
 
 volumes:
   moodle_moodle:

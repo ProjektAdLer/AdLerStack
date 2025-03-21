@@ -19,22 +19,8 @@ back to the initial state.
 
 To simplify mainting the docker compose.yml files this project uses the following files:
 
-- docker compose.base.yml: This is currently the file used in the AdlerDevelopmentEnvironment project.
+- docker compose.yml: This is the base docker compose file that will be used for all of our projects. Do not change it.
 - docker compose.test-adjustments.yml: This file contains all modifications needed for the test environment.
-
-Use the following commands to start/stop/pull the docker containers:
-
-- start:
-  `docker compose -f docker-compose.base.yml -f docker-compose.test-adjustments.yml up -d --build --force-recreate --wait`
-- stop: `docker compose -f docker-compose.base.yml -f docker-compose.test-adjustments.yml down`
-- pull: `docker compose -f docker-compose.base.yml -f docker-compose.test-adjustments.yml pull`
-
-You can generate the combined docker compose.yml file with the following command:
-
-> [!WARNING]
-> You have to manually update the docker compose.yml after every pull or change to the source files.
-
-- `docker compose -f docker-compose.base.yml -f docker-compose.test-adjustments.yml config > docker-compose.yml`
 
 ## Additional, less relevant information
 

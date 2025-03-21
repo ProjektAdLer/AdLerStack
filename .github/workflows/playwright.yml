@@ -25,9 +25,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Generate Docker Compose config
-        run: docker compose -f docker-compose.base.yml -f docker-compose.test-adjustments.yml config > docker-compose.yml
-
       - name: Remove existing Docker containers and volumes
         run: docker compose down -v
 
