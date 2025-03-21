@@ -60,16 +60,23 @@ test.describe.serial("Complete a Learning World", () => {
         let sharedContext;
         let sharedPage;
 
-        test.beforeAll(async ({browser}) => {
-            // Create persistent context
-            sharedContext = await browser.newContext();
+        test.beforeAll(async ({browser}, testInfo) => {
+            sharedContext = await browser.newContext({
+                recordVideo: {
+                    dir: testInfo.outputPath('video.webm'),
+                }
+            });
             sharedPage = await sharedContext.newPage();
         });
 
-        test.afterAll(async () => {
+        test.afterAll(async ({}, testInfo) => {
+            const savedPath = testInfo.outputPath(`video.webm`);
             // Close the shared context when done
             await sharedPage?.close();
             await sharedContext?.close();
+
+            const path = await sharedPage.video()!.path();
+            testInfo.attachments.push({ name: 'video', path, contentType: 'video/webm' });
         });
 
         test('Login as student', async () => {
@@ -103,16 +110,24 @@ test.describe.serial("Complete a Learning World", () => {
         let sharedContext;
         let sharedPage;
 
-        test.beforeAll(async ({browser}) => {
+        test.beforeAll(async ({browser}, testInfo) => {
             // Create persistent context
-            sharedContext = await browser.newContext();
+            sharedContext = await browser.newContext({
+                recordVideo: {
+                    dir: testInfo.outputPath('video.webm'),
+                }
+            });
             sharedPage = await sharedContext.newPage();
         });
 
-        test.afterAll(async () => {
+        test.afterAll(async ({}, testInfo) => {
+            const savedPath = testInfo.outputPath(`video.webm`);
             // Close the shared context when done
             await sharedPage?.close();
             await sharedContext?.close();
+
+            const path = await sharedPage.video()!.path();
+            testInfo.attachments.push({ name: 'video', path, contentType: 'video/webm' });
         });
 
         test("login to the application", async () => {
