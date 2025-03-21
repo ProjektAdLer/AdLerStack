@@ -49,6 +49,7 @@ test.describe.serial("Access a Learning Element in 3D", () => {
         await page.locator('#accessibility-host > button:nth-child(1)').dispatchEvent('click');
 
         // Ein Assert. Dieser ist ebenfalls mit dem Generator erstellt worden
-        await expect(page.getByRole('paragraph')).toContainText('test');
+        // Der Timeout musste manuell erhöht werden, da das Spiel in der Pipeline langsamer läuft und 5s somit zu kurz sind.
+        await expect(page.getByRole('paragraph')).toContainText('test', {timeout: 10000});
     });
 })
