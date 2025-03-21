@@ -80,7 +80,7 @@ test.describe.serial("Complete a Learning World", () => {
 
         test('Login as student', async () => {
             await sharedPage.goto(`http://${process.env._URL_MOODLE}/`);
-            await sharedPage.waitForSelector('input[type="password"]', { state: 'visible' });
+            await sharedPage.waitForTimeout(2000);
 
             await sharedPage.getByRole('link', {name: 'Log in'}).click();
             await sharedPage.getByRole('textbox', {name: 'Username'}).click();
