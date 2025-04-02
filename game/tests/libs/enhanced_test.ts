@@ -97,7 +97,7 @@ const test = baseTest.extend<
             const currentTimeout = testInfo.timeout;
             testInfo.setTimeout(currentTimeout + 90000);
 
-            if (process.platform !== 'linux') {
+            if (process.platform !== 'linux' && process.platform !== 'darwin') {
                 throw new Error('Environment reset is only supported on Linux');
             }
             console.log('Resetting environment. This will take around half a minute...');
