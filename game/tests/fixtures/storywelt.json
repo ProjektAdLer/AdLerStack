@@ -1,0 +1,224 @@
+{
+  "$type": "ATF",
+  "fileVersion": "2.3.0",
+  "amgVersion": "2.2.3",
+  "author": "",
+  "language": "de",
+  "world": {
+    "$type": "LearningWorld",
+    "evaluationLink": "",
+    "enrolmentKey": "",
+    "worldName": "StoryWelt_Test",
+    "worldUUID": "709febb3-637e-4da0-916d-1e6ec4c9240b",
+    "worldDescription": "",
+    "worldGoals": [
+      ""
+    ],
+    "topics": [],
+    "spaces": [
+      {
+        "$type": "LearningSpace",
+        "spaceGoals": [],
+        "spaceStory": {
+          "$type": "SimpleSpaceStory",
+          "introStory": {
+            "$type": "SimpleSpaceStoryElement",
+            "storyTexts": [
+              "1a_Intro",
+              "test2"
+            ],
+            "elementModel": "a_npc_dozentlukas"
+          },
+          "outroStory": null
+        },
+        "spaceName": "1a_Intro",
+        "requiredPointsToComplete": 1,
+        "spaceId": 1,
+        "spaceUUID": "8bdf5b03-ca68-4fa0-a14e-929519b2789c",
+        "spaceDescription": "",
+        "spaceSlotContents": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          1
+        ],
+        "requiredSpacesToEnter": "",
+        "spaceTemplate": "R_20X20_6L",
+        "spaceTemplateStyle": "CampusAschaffenburg"
+      },
+      {
+        "$type": "LearningSpace",
+        "spaceGoals": [],
+        "spaceStory": {
+          "$type": "SimpleSpaceStory",
+          "introStory": null,
+          "outroStory": {
+            "$type": "SimpleSpaceStoryElement",
+            "storyTexts": [
+              "1b_Outro"
+            ],
+            "elementModel": "a_npc_defaultnpc"
+          }
+        },
+        "spaceName": "1b_Outro",
+        "requiredPointsToComplete": 1,
+        "spaceId": 2,
+        "spaceUUID": "814e937b-b3bb-4005-abb8-39593d78d8f5",
+        "spaceDescription": "",
+        "spaceSlotContents": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          2
+        ],
+        "requiredSpacesToEnter": "",
+        "spaceTemplate": "R_20X20_6L",
+        "spaceTemplateStyle": "CampusAschaffenburg"
+      },
+      {
+        "$type": "LearningSpace",
+        "spaceGoals": [],
+        "spaceStory": {
+          "$type": "SimpleSpaceStory",
+          "introStory": {
+            "$type": "SimpleSpaceStoryElement",
+            "storyTexts": [
+              "2_Intro"
+            ],
+            "elementModel": "a_npc_sheriffjustice"
+          },
+          "outroStory": {
+            "$type": "SimpleSpaceStoryElement",
+            "storyTexts": [
+              "2_Outro"
+            ],
+            "elementModel": "a_npc_sheriffjustice"
+          }
+        },
+        "spaceName": "2_IntroOutro",
+        "requiredPointsToComplete": 1,
+        "spaceId": 3,
+        "spaceUUID": "32415a95-9e36-45ba-93d9-b849bb20763b",
+        "spaceDescription": "",
+        "spaceSlotContents": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          3
+        ],
+        "requiredSpacesToEnter": "(1)v(2)",
+        "spaceTemplate": "R_20X20_6L",
+        "spaceTemplateStyle": "CampusAschaffenburg"
+      },
+      {
+        "$type": "LearningSpace",
+        "spaceGoals": [],
+        "spaceStory": {
+          "$type": "SimpleSpaceStory",
+          "introStory": {
+            "$type": "SimpleSpaceStoryElement",
+            "storyTexts": [
+              "3_Intro"
+            ],
+            "elementModel": "a_npc_dozentlukas"
+          },
+          "outroStory": {
+            "$type": "SimpleSpaceStoryElement",
+            "storyTexts": [
+              "3_Outro"
+            ],
+            "elementModel": "a_npc_defaultnpc"
+          }
+        },
+        "spaceName": "3_IntroOutro_DifferentNPC",
+        "requiredPointsToComplete": 1,
+        "spaceId": 4,
+        "spaceUUID": "0a6d7e94-f500-497e-abcd-a51a9b995d8f",
+        "spaceDescription": "",
+        "spaceSlotContents": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          4
+        ],
+        "requiredSpacesToEnter": "3",
+        "spaceTemplate": "R_20X20_6L",
+        "spaceTemplateStyle": "CampusAschaffenburg"
+      }
+    ],
+    "elements": [
+      {
+        "$type": "LearningElement",
+        "elementDescription": "",
+        "elementGoals": [
+          ""
+        ],
+        "elementMaxScore": 1,
+        "elementModel": "l_random",
+        "learningSpaceParentId": 1,
+        "url": "",
+        "elementId": 1,
+        "elementUUID": "6d75ce90-bf05-426c-8c26-acdc60180d69",
+        "elementName": "LE1",
+        "elementCategory": "image",
+        "elementFileType": "png"
+      },
+      {
+        "$type": "LearningElement",
+        "elementDescription": "",
+        "elementGoals": [
+          ""
+        ],
+        "elementMaxScore": 1,
+        "elementModel": "l_random",
+        "learningSpaceParentId": 2,
+        "url": "",
+        "elementId": 2,
+        "elementUUID": "5d9bfced-a579-4a40-9d11-7d87d1d6df74",
+        "elementName": "LE 2",
+        "elementCategory": "image",
+        "elementFileType": "png"
+      },
+      {
+        "$type": "LearningElement",
+        "elementDescription": "",
+        "elementGoals": [
+          ""
+        ],
+        "elementMaxScore": 1,
+        "elementModel": "l_random",
+        "learningSpaceParentId": 3,
+        "url": "",
+        "elementId": 3,
+        "elementUUID": "fa3564aa-8788-467f-bdb8-816441c1f7d8",
+        "elementName": "LE3",
+        "elementCategory": "image",
+        "elementFileType": "png"
+      },
+      {
+        "$type": "LearningElement",
+        "elementDescription": "",
+        "elementGoals": [
+          ""
+        ],
+        "elementMaxScore": 1,
+        "elementModel": "l_random",
+        "learningSpaceParentId": 4,
+        "url": "",
+        "elementId": 4,
+        "elementUUID": "4ad77ad9-5722-481f-bd66-42ca3c56d37e",
+        "elementName": "LE4",
+        "elementCategory": "image",
+        "elementFileType": "png"
+      }
+    ]
+  }
+}
