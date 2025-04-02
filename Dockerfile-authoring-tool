@@ -16,7 +16,7 @@ RUN ARCH_SUFFIX=""; \
             ARCH_SUFFIX="-arm64"; \
         fi && \
     wget -O authoring-tool.AppImage \
-    "https://packages.projekt-adler.eu/packages/authoring-tool/${VERSION}-linux-arm64.AppImage" && \
+    "https://packages.projekt-adler.eu/packages/authoring-tool/${VERSION}-linux${ARCH_SUFFIX}.AppImage" && \
     chmod +x authoring-tool.AppImage && \
     ./authoring-tool.AppImage --appimage-extract && \
     mv squashfs-root/* . && \
