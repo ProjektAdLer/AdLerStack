@@ -38,6 +38,7 @@ test.describe.serial("Access a Learning Element in 3D", () => {
         await page.getByTestId('userName').fill(process.env._PLAYWRIGHT_USER_STUDENT_USERNAME!);
         await page.getByTestId('password').fill(process.env._USER_STUDENT_PW!);
         await page.getByTestId('loginButton').click();
+        await page.waitForTimeout(2000) // loading screen
         await page.getByRole('button').filter({hasText: /^$/}).nth(1).click();
         await page.getByRole('button', {name: 'testwelt'}).click();
         await page.getByRole('button', {name: 'Lernwelt öffnen!'}).click();
