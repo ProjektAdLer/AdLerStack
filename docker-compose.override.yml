@@ -1,4 +1,4 @@
-name: adler_e2e_tests  # this name is referenced in some tests (temporary workaround) so it is not allowed to change
+name: adler_e2e_tests
 
 services:
   moodle:
