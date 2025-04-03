@@ -2,6 +2,8 @@ name: Release
 on:
   release:
     types: [created]
+  workflow_call:
+
 
 jobs:
   test:
@@ -26,3 +28,22 @@ jobs:
           gh release upload ${{ github.ref_name }} docker-compose.yml --clobber
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+      - name: Checkout AdlerDevelopmentEnvironment repository
+        uses: actions/checkout@v4
+        with:
+          repository: ProjektAdLer/AdlerDevelopmentEnvironment
+          path: AdlerDevelopmentEnvironment
+          ssh-key: ${{ secrets.ADLER_DEVELOPMENT_ENVIRONMENT_DEPLOY_KEY }}
+      - name: Copy docker-compose.yml to AdlerDevelopmentEnvironment
+        run: |
+          cp docker-compose.yml AdlerDevelopmentEnvironment/non-moodle/docker-compose.yml
+      - name: Commit and push changes
+        run: |
+          cd AdlerDevelopmentEnvironment
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add non-moodle/docker-compose.yml
+          git commit -m "Update docker-compose.yml from release ${{ github.ref_name }}"
+          git push
