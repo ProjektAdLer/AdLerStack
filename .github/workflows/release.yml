@@ -1,0 +1,27 @@
+name: Release
+on:
+  release:
+    types: [created]
+
+jobs:
+  test:
+    uses: ./.github/workflows/playwright.yml
+
+  upload-release-files:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Upload docker-compose.yml
+        run: |
+          curl --fail-with-body -u upload:${{ secrets.PACKAGE_REGISTRY_UPLOAD_PASSWORD }} \
+          -T docker-compose.yml \
+          "https://packages.projekt-adler.eu/upload/adler_stack/${{ github.ref_name }}.docker-compose.yml"
+
+      - name: Append files to release
+        run: |
+          gh release upload ${{ github.ref_name }} .env --clobber --name ".env.example"
+          gh release upload ${{ github.ref_name }} docker-compose.yml --clobber
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
