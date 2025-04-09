@@ -45,12 +45,18 @@ services:
       apk add --no-cache curl jq
       while true; do
         if [ -z \"\$(docker compose ps worker -aq --status running)\" ]; then
-          # Stop all containers on dind
-          docker -H tcp://dind:2375 ps -aq | xargs -r docker -H tcp://dind:2375 stop
-          # Remove all containers on dind
-          docker -H tcp://dind:2375 ps -aq | xargs -r docker -H tcp://dind:2375 rm -v
-          # Remove all unused volumes on dind
-          docker -H tcp://dind:2375 volume prune -f
+          # Stop and remove the runner and DinD containers
+          docker compose stop worker dind
+          docker compose rm -f worker dind
+        
+          # Start DinD container first
+          docker compose up -d dind
+        
+          # Wait for DinD to be healthy
+          echo 'Waiting for DinD to be ready...'
+          until docker compose ps dind | grep '(healthy)'; do
+            sleep 2
+          done
 
           # Start the runner
           REGISTRATION_TOKEN=$(curl -sX POST -H \"Authorization: token $$GH_PAT\" \"https://api.github.com/orgs/$$ORG_NAME/actions/runners/registration-token\" | jq -r '.token')
