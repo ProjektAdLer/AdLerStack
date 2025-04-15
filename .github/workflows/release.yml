@@ -13,6 +13,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Add version comment to docker-compose.yml
+        run: |
+          echo "# AdLer-Stack release: ${{ github.ref_name }}" > temp_file
+          cat docker-compose.yml >> temp_file
+          mv temp_file docker-compose.yml
+
       - name: Upload docker-compose.yml
         run: |
           curl --fail-with-body -u upload:${{ secrets.PACKAGE_REGISTRY_UPLOAD_PASSWORD }} \
