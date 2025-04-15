@@ -75,7 +75,6 @@ services:
     depends_on:
       db_backend:
         condition: service_healthy
-        required: true
     restart: unless-stopped
     extra_hosts:
       - ${_DOMAIN}:host-gateway
