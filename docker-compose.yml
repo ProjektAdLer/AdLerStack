@@ -19,7 +19,8 @@ services:
       - moodle_moodle:/bitnami/moodle
       - moodle_moodledata:/bitnami/moodledata
     depends_on:
-      - db_moodle
+      db_moodle:
+        condition: service_healthy
     restart: unless-stopped
 
   db_moodle:
@@ -75,6 +76,8 @@ services:
     depends_on:
       db_backend:
         condition: service_healthy
+      moodle:
+        condition: service_healthy
     restart: unless-stopped
     extra_hosts:
       - ${_DOMAIN}:host-gateway
@@ -85,6 +88,9 @@ services:
       API_URL: "http://${_URL_BACKEND}/api"
       MOODLE_URL: "http://${_URL_MOODLE}"
     restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
 
 volumes:
   moodle_moodle:
