@@ -6,5 +6,5 @@ This project contains the automated integration and end-to-end tests for the Adl
 
 - [Setup and Usage](docs/setup.md)
 - [Writing Tests](docs/writing_tests.md)
-
+- [Deploying AdLer](docs/deploying_adler.md)
 
