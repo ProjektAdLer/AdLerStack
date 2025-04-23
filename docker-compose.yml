@@ -24,7 +24,7 @@ services:
     restart: unless-stopped
 
   db_moodle:
-    image: docker.io/bitnami/mariadb:10.11
+    image: docker.io/bitnami/mariadb:11.4
     environment:
       MARIADB_USER: ${_DB_MOODLE_USER}
       MARIADB_PASSWORD: ${_DB_MOODLE_PW}
@@ -42,7 +42,7 @@ services:
       timeout: 5s
 
   db_backend:
-    image: docker.io/bitnami/mariadb:10.11
+    image: docker.io/bitnami/mariadb:11.4
     environment:
       MARIADB_USER: ${_DB_BACKEND_USER}
       MARIADB_PASSWORD: ${_DB_BACKEND_PW}
