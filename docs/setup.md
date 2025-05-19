@@ -1,5 +1,8 @@
 ## Setup and Usage
 
+> [!NOTE]
+> [In our project documentation (german)](https://projektadler.github.io/Documentation/integration-und-e2e-testing.html) is a detailed guide on setup, usage and writing tests.
+
 - Required tools: Docker, Node, NPM (any guide from Google/official docs should work, or see [this unmaintained guide in our documenation](https://projektadler.github.io/Documentation/integration-und-e2e-testing.html))
 - For every testsuite (subfolders in project root) run `npm install`
 - Execute tests with `npm test`
