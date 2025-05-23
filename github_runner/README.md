@@ -15,3 +15,5 @@ runner. To run multiple runners start the compose with different project names
 - by having multiple `docker-compose.yml` files with different project names.
 
 **Do not** use the -p/--project-name flag!
+
+Preferrably use the `manage-runners.sh` script to start and stop multiple runners.

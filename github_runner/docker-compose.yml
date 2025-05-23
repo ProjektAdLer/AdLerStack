@@ -20,6 +20,9 @@ services:
       dind:
         condition: service_healthy
     restart: no  # doing with watchdog as restart does not do a clean restart
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
     environment:
       EPHEMERAL: 1
       ORG_NAME: ProjektAdLer
