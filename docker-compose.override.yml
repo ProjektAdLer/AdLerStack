@@ -28,7 +28,7 @@ services:
       context: .
       dockerfile: Dockerfile-authoring-tool
       args:
-        VERSION: 2.2.3-rc.2
+        VERSION: 2.2.2
     ports:
       - "${_PORT_AUTHORING_TOOL:-8001}:8002"
     extra_hosts:

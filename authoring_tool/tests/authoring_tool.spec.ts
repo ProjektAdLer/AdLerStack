@@ -14,36 +14,31 @@ test.beforeAll(async ({resetEnvironment}) => {
 });
 
 test.describe.serial('World lifecycle', () => {
-    const worldName = "testwelt";
-
     test('Login', async ({page}) => {
         await page.goto('/MyLearningWorldsOverview');
         await page.waitForTimeout(1000);  // somehow during first start a delay of at least 250ms is needed
-        await page.locator('#LmsLoginButton\\.OpenLmsDialog\\.Button').click();
-        await page.locator('#LmsLoginDialog\\.BackendUrl\\.TextField').click();
-        await page.locator('#LmsLoginDialog\\.BackendUrl\\.TextField').press('ControlOrMeta+a');
-        await page.locator('#LmsLoginDialog\\.BackendUrl\\.TextField').fill(`http://${process.env._URL_BACKEND}/api`);
-        await page.locator('#LmsLoginDialog\\.Username\\.TextField').click();
-        await page.locator('#LmsLoginDialog\\.Username\\.TextField').press('ControlOrMeta+a');
-        await page.locator('#LmsLoginDialog\\.Username\\.TextField').fill(`${process.env._PLAYWRIGHT_USER_MANAGER_USERNAME}`);
-        await page.locator('#LmsLoginDialog\\.Password\\.TextField').click();
-        await page.locator('#LmsLoginDialog\\.Password\\.TextField').fill(`${process.env._USER_MANAGER_PW}`);
-        await page.locator('#LmsLoginDialog\\.SubmitForm\\.Button').click();
-        await expect(page.locator('#LmsLoginDialog\\.LoggedInUserName\\.Text'))
-            .toContainText(process.env._PLAYWRIGHT_USER_MANAGER_USERNAME);
+        await page.getByRole('button', {name: 'Einloggen auf AdLer-Server'}).click();
+        await page.getByRole('textbox').first().click();
+        await page.getByRole('textbox').first().press('ControlOrMeta+a');
+        await page.getByRole('textbox').first().fill(`http://${process.env._URL_BACKEND}/api`);
+        await page.getByRole('textbox').nth(1).click();
+        await page.getByRole('textbox').nth(1).press('ControlOrMeta+a');
+        await page.getByRole('textbox').nth(1).fill(`${process.env._PLAYWRIGHT_USER_MANAGER_USERNAME}`);
+        await page.locator('input[type="password"]').click();
+        await page.locator('input[type="password"]').fill(`${process.env._USER_MANAGER_PW}`);
+        await page.getByRole('button', {name: 'Anmelden'}).click();
+        await expect(page.getByRole('dialog')).toContainText('Erfolgreich');
 
         await new Promise(resolve => setTimeout(resolve, 5000));  // Workaround for backend initialization bug in 2.4.2-rc.4
     });
 
     test('Upload world', async ({page, request, managerAuth}) => {
         await page.goto('/MyLearningWorldsOverview');
-        await page.getByText(worldName).last().hover();
-        await page.locator('#LearningWorldCard\\.OpenLearningWorld\\.Button-' + worldName).click();
-        await page.waitForTimeout(1000);  // without it might happen that the button is clicked to early
-        await page.locator('#HeaderBar\\.GenerateLearningWorld\\.Button').click();
-        await page.locator('#GenericCancellationConfirmationDialog\\.Submit\\.Button').click();
-        await expect(page.locator('#UploadSuccessfulDialog\\.DialogContent\\.Text'))
-            .toBeVisible({timeout: 30000});
+        await page.getByText('testwelt').last().hover();
+        await page.getByRole('button', {name: 'Öffnen'}).click();
+        await page.getByRole('button', {name: 'Lernwelt als Moodle-Lernwelt-'}).click();
+        await page.getByRole('button', {name: 'Veröffentlichen', exact: true}).click();
+        await expect(page.locator('h6')).toContainText('Veröffentlichen erfolgreich', {timeout: 30000});
 
         // Verify world exists in backend
         const response = await request.get(`http://${process.env._URL_BACKEND}/api/Worlds/author/${(await managerAuth()).userId}`, {
@@ -69,11 +64,10 @@ test.describe.serial('World lifecycle', () => {
 
         // UI delete steps
         await page.goto('/MyLearningWorldsOverview');
-        await page.waitForTimeout(1000);
-        await page.locator('#LmsLoginButton\\.OpenLmsDialog\\.Button').click();
-      //  await expect(page.locator('#LmsLoginDialog.Dialog.Paper')).toContainText('testwelt');
-        await page.getByRole('button', { name: 'Moodle-Kurs löschen' }).click();
-        await page.getByRole('button', { name: 'Ja' }).click();
+        await page.getByRole('button', {name: 'Einloggen auf AdLer-Server'}).click();
+        await expect(page.getByRole('dialog')).toContainText('testwelt');
+        await page.getByRole('button', {name: 'Moodle-Kurs löschen'}).click();
+        await page.getByRole('button', {name: 'Ja'}).click();
 
         // Wait for world to disappear from dialog
         // await expect(
