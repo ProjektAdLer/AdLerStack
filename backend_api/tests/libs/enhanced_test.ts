@@ -95,7 +95,7 @@ const test = baseTest.extend<
     resetEnvironment: async ({}, use, testInfo) => {
         const resetFn = async () => {
             const currentTimeout = testInfo.timeout;
-            testInfo.setTimeout(currentTimeout + 90000);
+            testInfo.setTimeout(currentTimeout + 150000);
 
             if (process.platform !== 'linux' && process.platform !== 'darwin') {
                 throw new Error('Environment reset is only supported on Linux');

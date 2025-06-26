@@ -43,7 +43,7 @@ test.describe.serial("Complete a Learning World", () => {
 
             // Verify successful login
             await expect(page.locator('#LmsLoginDialog\\.LoggedInUserName\\.Text'))
-                .toContainText(process.env._PLAYWRIGHT_USER_MANAGER_USERNAME);
+                .toContainText(process.env._PLAYWRIGHT_USER_MANAGER_USERNAME, {timeout: 10000});
         });
 
         test('Upload world', async ({page, request, managerAuth}) => {

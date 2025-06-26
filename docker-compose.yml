@@ -37,7 +37,7 @@ services:
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "/opt/bitnami/scripts/mariadb/healthcheck.sh"]
-      start_period: 10s
+      start_period: 30s
       interval: 15s
       timeout: 5s
 
@@ -55,7 +55,7 @@ services:
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "/opt/bitnami/scripts/mariadb/healthcheck.sh"]
-      start_period: 10s
+      start_period: 30s
       interval: 15s
       timeout: 5s
 
