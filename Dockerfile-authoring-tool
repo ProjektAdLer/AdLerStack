@@ -1,6 +1,19 @@
 FROM ubuntu:24.04
 
 ARG VERSION
+# Set TARGETARCH to the system architecture if not provided
+ARG TARGETARCH
+RUN if [ -z "$TARGETARCH" ]; then \
+      arch=$(uname -m); \
+      case "$arch" in \
+        x86_64) TARGETARCH="amd64" ;; \
+        aarch64) TARGETARCH="arm64" ;; \
+        *) TARGETARCH="$arch" ;; \
+      esac; \
+      echo "Defaulting TARGETARCH to $TARGETARCH"; \
+    else \
+      echo "Using provided TARGETARCH: $TARGETARCH"; \
+    fi
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt install -y socat wget curl xvfb libgtk-3-0 libnss3 libasound2t64 ca-certificates \
