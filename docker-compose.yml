@@ -60,7 +60,7 @@ services:
       timeout: 5s
 
   backend:
-    image: ghcr.io/projektadler/adlerbackend:2.4.6
+    image: ghcr.io/projektadler/adlerbackend:2.4.9
     environment:
       ASPNETCORE_ENVIRONMENT: "Production"
       ASPNETCORE_DBUSER: ${_DB_BACKEND_USER}
