@@ -14,7 +14,7 @@ jobs:
     runs-on: ${{ matrix.runner }}
 
     env:
-      _DOMAIN: "dind"
+      _DOMAIN: ${{ matrix.runner == 'self-hosted' && 'dind' || 'localhost' }}
 
     strategy:
       fail-fast: false
