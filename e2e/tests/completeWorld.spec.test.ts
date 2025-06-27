@@ -113,6 +113,8 @@ test.describe.serial("Complete a Learning World", () => {
         test('Login as student', async () => {
             await sharedPage.goto(`http://${process.env._URL_MOODLE}/`);
             await sharedPage.getByRole('link', {name: 'Log in'}).click();
+            // In Some cases (mine) we need to wait for the Login dialog of Moodle to render completly
+            // await sharedPage.waitForTimeout(1000);
             await sharedPage.getByRole('textbox', {name: 'Username'}).click();
             await sharedPage.getByRole('textbox', {name: 'Username'}).fill(process.env._PLAYWRIGHT_USER_STUDENT_USERNAME);
             await sharedPage.locator('input[type="password"]').click();
@@ -210,7 +212,7 @@ test.describe.serial("Complete a Learning World", () => {
         });
 
         test("complete Learning element 1", async () => {
-            await click3dElement(sharedPage, "learningelement Element 1 1 Point 1");
+            await click3dElement(sharedPage, "learningelement id: 1 with name: Element 1 1 Point");
             // get the button with the name "Lernelement abschließen" and click it
             await sharedPage.getByRole('button', {name: 'Lernelement abschließen'}).click();
 
@@ -218,12 +220,12 @@ test.describe.serial("Complete a Learning World", () => {
         });
 
         test("complete Learning element 2", async () => {
-            await click3dElement(sharedPage, "learningelement Element 2 1 Point 2");
+            await click3dElement(sharedPage, "learningelement id: 2 with name: Element 2 1 Point");
             await sharedPage.getByRole('button', {name: 'Lernelement abschließen'}).click();
         });
 
         test("Exit Room 1a", async () => {
-            await click3dElement(sharedPage, "exit door 1");
+            await click3dElement(sharedPage, "door of space id: 1 of type: exit");
             await sharedPage.getByRole('button', {name: 'zurück zum Lernraum-Menü'}).click();
         });
 
@@ -234,7 +236,7 @@ test.describe.serial("Complete a Learning World", () => {
         });
 
         test("Complete the Adaptive Learning Element", async () => {
-            await click3dElement(sharedPage, "learningelement adaptivityElement 3");
+            await click3dElement(sharedPage, "learningelement id: 3 with name: adaptivityElement");
             await sharedPage.getByRole('button', {name: 'Platzhalter-Icon Platzhalter-'}).click();
             await sharedPage.getByRole('button', {name: 'Platzhalter-Icon Platzhalter-'}).click();
             await sharedPage.getByRole('button', {name: 'Philipp'}).click();
