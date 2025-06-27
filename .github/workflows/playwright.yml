@@ -11,7 +11,7 @@ on:
 jobs:
   test-playwright:
     timeout-minutes: 60
-    runs-on: self-hosted
+    runs-on: ${{ matrix.runner }}
 
     env:
       _DOMAIN: "dind"
@@ -21,9 +21,17 @@ jobs:
       matrix:
         include:
           - project: authoring_tool
+            runner: self-hosted
+          - project: authoring_tool
+            runner: ubuntu-24.04-arm
           - project: backend_api
+            runner: self-hosted
+          - project: backend_api
+            runner: ubuntu-24.24-arm
           - project: e2e
+            runner: self-hosted
           - project: game
+            runner: self-hosted
 
     steps:
       - uses: actions/checkout@v4
@@ -59,6 +67,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
-          name: playwright-report-${{ matrix.project }}
+          name: playwright-report-${{ matrix.project }}-${{ matrix.runner }}
           path: ${{ matrix.project }}/playwright-report/
           retention-days: 30
