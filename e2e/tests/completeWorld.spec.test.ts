@@ -236,6 +236,7 @@ test.describe.serial("Complete a Learning World", () => {
         });
 
         test("Complete the Adaptive Learning Element", async () => {
+            test.setTimeout(60_000); // Increase timeout needed for headless test execution
             await click3dElement(sharedPage, "learningelement id: 3 with name: adaptivityElement");
             await sharedPage.getByRole('button', {name: 'Platzhalter-Icon Platzhalter-'}).click();
             await sharedPage.getByRole('button', {name: 'Platzhalter-Icon Platzhalter-'}).click();
