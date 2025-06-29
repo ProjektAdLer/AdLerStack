@@ -15,6 +15,8 @@ dotenvExpand.expand(myEnv);
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
+    // timeout: 60_000,  // needed on slow systems
+
     /* Do not retry and fail on first error. This is because of how AMG tests (currently) work */
     retries: 0,
     maxFailures: 1,

@@ -21,7 +21,7 @@ test.describe.serial("Complete a Learning World", () => {
 
         test('Login', async ({page}) => {
             await page.goto(`http://${process.env._URL_AUTHORING_TOOL}/MyLearningWorldsOverview`);
-            await page.waitForTimeout(1000);
+            await page.waitForTimeout(1000);  // when working on slow systems increase this value significantly (eg to 7000)
 
             // Click login button
             await page.locator('#LmsLoginButton\\.OpenLmsDialog\\.Button').click();
@@ -43,14 +43,14 @@ test.describe.serial("Complete a Learning World", () => {
 
             // Verify successful login
             await expect(page.locator('#LmsLoginDialog\\.LoggedInUserName\\.Text'))
-                .toContainText(process.env._PLAYWRIGHT_USER_MANAGER_USERNAME, {timeout: 10000});
+                .toContainText(process.env._PLAYWRIGHT_USER_MANAGER_USERNAME, {timeout: 20000});
         });
 
         test('Upload world', async ({page, request, managerAuth}) => {
             await page.goto(`http://${process.env._URL_AUTHORING_TOOL}/MyLearningWorldsOverview`);
             await page.getByText(worldName).last().hover();
             await page.locator('#LearningWorldCard\\.OpenLearningWorld\\.Button-' + worldName).click();
-            await page.waitForTimeout(1000);  // without it might happen that the button is clicked to early
+            await page.waitForTimeout(3000);  // without it might happen that the button is clicked to early, on slow systems, incrase value (eg 3000)
             await page.locator('#HeaderBar\\.GenerateLearningWorld\\.Button').click();
             await page.locator('#GenericCancellationConfirmationDialog\\.Submit\\.Button').click();
             await expect(page.locator('#UploadSuccessfulDialog\\.DialogContent\\.Text'))
@@ -215,13 +215,15 @@ test.describe.serial("Complete a Learning World", () => {
             await click3dElement(sharedPage, "learningelement id: 1 with name: Element 1 1 Point");
             // get the button with the name "Lernelement abschließen" and click it
             await sharedPage.getByRole('button', {name: 'Lernelement abschließen'}).click();
-
-            await sharedPage.waitForTimeout(200);
+            // wait for the button to disappear
+            await sharedPage.getByRole('button', {name: 'Lernelement abschließen'}).waitFor({state: 'hidden'});
         });
 
         test("complete Learning element 2", async () => {
             await click3dElement(sharedPage, "learningelement id: 2 with name: Element 2 1 Point");
             await sharedPage.getByRole('button', {name: 'Lernelement abschließen'}).click();
+            // wait for the button to disappear
+            await sharedPage.getByRole('button', {name: 'Lernelement abschließen'}).waitFor({state: 'hidden'});
         });
 
         test("Exit Room 1a", async () => {
