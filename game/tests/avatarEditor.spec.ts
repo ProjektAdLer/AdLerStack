@@ -22,9 +22,10 @@ test.describe.serial(`avatar editor`, () => {
         test(`user navigates from avatar editor to welcome screen (${width}x${height})`, async ({page}) => {
             await page.setViewportSize({width: width, height: height});
             await userLogin(page);
+            const welcomScreenURL = page.url();
             await navigateToAvatarEditor(page);
             await page.getByRole('button', { name: 'Home Icon' }).click();
-            await expect(page.url()).toEqual(`http://localhost:${process.env._PORT_3D}/`);
+            await expect(page.url()).toEqual(welcomScreenURL);
         })
 
         test(`user selects avatar editor categories (${width}x${height})`, async ({page}) =>{
