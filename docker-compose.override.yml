@@ -24,7 +24,7 @@ services:
       MOODLE_URL: "http://${_URL_MOODLE}"
 
   authoring-tool:
-    image: ghcr.io/projektadler/autorentool:2.3.2
+    image: ghcr.io/projektadler/autorentool:2.4.0
     ports:
       - "${_PORT_AUTHORING_TOOL:-8001}:8002"
     extra_hosts:
