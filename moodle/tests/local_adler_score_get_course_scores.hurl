@@ -1,4 +1,25 @@
 ##############################################
+# TEST 0: Valid request - S1 gets scores for C1 (enrolled)
+# POSITIVE TEST: S1 is enrolled in C1, should successfully get scores
+# Expected: HTTP 200 with valid course scores data, no exception
+##############################################
+POST {{host}}/webservice/rest/server.php
+Content-Type: application/x-www-form-urlencoded
+[FormParams]
+wsfunction: local_adler_score_get_course_scores
+moodlewsrestformat: json
+wstoken: {{moodleS1Token}}
+course_id: {{course_c1_id}}
+
+HTTP 200
+[Asserts]
+# Should NOT have an exception - this is a valid request
+jsonpath "$.exception" not exists
+# Should return course scores data
+jsonpath "$.data" exists
+jsonpath "$.data" count > 0
+
+##############################################
 # TEST 1: S2 gets scores for C1 (not enrolled)
 # VULNERABILITY: S2 should NOT access C1 scores
 # Test should FAIL if exception field is missing in response

@@ -1,4 +1,26 @@
 ##############################################
+# TEST 0: Valid request - S1 queries element from C1 (enrolled)
+# POSITIVE TEST: S1 is enrolled in C1, should successfully get element IDs
+# Expected: HTTP 200 with valid element data, no exception
+##############################################
+POST {{host}}/webservice/rest/server.php
+Content-Type: application/x-www-form-urlencoded
+[FormParams]
+wsfunction: local_adler_get_element_ids_by_uuids
+moodlewsrestformat: json
+wstoken: {{moodleS1Token}}
+elements[0][course_id]: {{course_c1_id}}
+elements[0][element_type]: cm
+elements[0][uuid]: {{c1_cm_uuid}}
+
+HTTP 200
+[Asserts]
+# Should NOT have an exception - this is a valid request
+jsonpath "$.exception" not exists
+# Should return element data
+jsonpath "$.data" count > 0
+
+##############################################
 # TEST 1: S2 queries element from C1 (not enrolled)
 # Should be BLOCKED - s2 is not enrolled in c1
 ##############################################
@@ -8,7 +30,9 @@ Content-Type: application/x-www-form-urlencoded
 wsfunction: local_adler_get_element_ids_by_uuids
 moodlewsrestformat: json
 wstoken: {{moodleS2Token}}
-elements: [{"course_id":"{{course_c1_id}}","element_type":"cm","uuid":"{{c1_cm_uuid}}"}]
+elements[0][course_id]: {{course_c1_id}}
+elements[0][element_type]: cm
+elements[0][uuid]: {{c1_cm_uuid}}
 
 HTTP 200
 [Asserts]
@@ -26,7 +50,9 @@ Content-Type: application/x-www-form-urlencoded
 wsfunction: local_adler_get_element_ids_by_uuids
 moodlewsrestformat: json
 wstoken: {{moodleM2Token}}
-elements: [{"course_id":"{{course_c1_id}}","element_type":"cm","uuid":"{{c1_cm_uuid}}"}]
+elements[0][course_id]: {{course_c1_id}}
+elements[0][element_type]: cm
+elements[0][uuid]: {{c1_cm_uuid}}
 
 HTTP 200
 [Asserts]
@@ -42,7 +68,9 @@ Content-Type: application/x-www-form-urlencoded
 wsfunction: local_adler_get_element_ids_by_uuids
 moodlewsrestformat: json
 wstoken: {{moodleS2Token}}
-elements: [{"course_id":"999999","element_type":"cm","uuid":"{{c1_cm_uuid}}"}]
+elements[0][course_id]: 999999
+elements[0][element_type]: cm
+elements[0][uuid]: {{c1_cm_uuid}}
 
 HTTP 200
 [Asserts]
@@ -58,7 +86,9 @@ Content-Type: application/x-www-form-urlencoded
 wsfunction: local_adler_get_element_ids_by_uuids
 moodlewsrestformat: json
 wstoken: {{moodleS2Token}}
-elements: [{"course_id":"1' OR '1'='1","element_type":"cm","uuid":"{{c1_cm_uuid}}"}]
+elements[0][course_id]: 1' OR '1'='1
+elements[0][element_type]: cm
+elements[0][uuid]: {{c1_cm_uuid}}
 
 HTTP 200
 [Asserts]
@@ -74,7 +104,9 @@ Content-Type: application/x-www-form-urlencoded
 wsfunction: local_adler_get_element_ids_by_uuids
 moodlewsrestformat: json
 wstoken: {{moodleS2Token}}
-elements: [{"course_id":"{{course_c1_id}}","element_type":"cm","uuid":"abc' OR '1'='1"}]
+elements[0][course_id]: {{course_c1_id}}
+elements[0][element_type]: cm
+elements[0][uuid]: abc' OR '1'='1
 
 HTTP 200
 [Asserts]
@@ -90,7 +122,9 @@ Content-Type: application/x-www-form-urlencoded
 wsfunction: local_adler_get_element_ids_by_uuids
 moodlewsrestformat: json
 wstoken: {{moodleS1Token}}
-elements: [{"course_id":"{{course_c1_id}}","element_type":"cm","uuid":""}]
+elements[0][course_id]: {{course_c1_id}}
+elements[0][element_type]: cm
+elements[0][uuid]:
 
 HTTP 200
 [Asserts]
@@ -106,7 +140,9 @@ Content-Type: application/x-www-form-urlencoded
 wsfunction: local_adler_get_element_ids_by_uuids
 moodlewsrestformat: json
 wstoken: {{moodleS1Token}}
-elements: [{"course_id":"{{course_c1_id}}","element_type":"cm","uuid":"*"}]
+elements[0][course_id]: {{course_c1_id}}
+elements[0][element_type]: cm
+elements[0][uuid]: *
 
 HTTP 200
 [Asserts]

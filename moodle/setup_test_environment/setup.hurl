@@ -10,6 +10,7 @@
 # - s1_id: User ID for student 1
 # - s2_username: Username for student 2
 # - m1_username: Username for manager 1
+# - m1_category_id: Category ID for manager 1
 # - m2_username: Username for manager 2
 # - moodleM1Token: Token for manager 1
 # - moodleM2Token: Token for manager 2
@@ -18,12 +19,16 @@
 # - course_c1_id: Course ID for course c1 (created by m1)
 # - c1_cm_uuid: UUID of a course module in course c1
 # - c1_cm_id: Course module ID for a learning element in course c1
+# - c1_adaptivity_uuid: UUID of the adaptivity element in c1
+# - c1_adaptivity_id: Course module ID for the adaptivity element in c1
+# - c1_adaptivity_question1_uuid: uuid of the first question of the adaptivity element
 
 # Initialize variables (needs a fake request)
-GET {{host}}
+GET {{host}}/webservice/rest/simpleserver.php
 [Options]
 variable: c1_cm_uuid=f734f354-6b0a-4102-a19d-57ab6f151146
-
+variable: c1_adaptivity_uuid=b228a001-d5a6-4298-9321-56270b476465
+variable: c1_adaptivity_question1_uuid=ac525937-0dd3-45a6-9e31-7e64936db61d
 
 # test login as site admin for adler_admin_service
 POST {{host}}/webservice/rest/simpleserver.php
@@ -98,6 +103,8 @@ elements[1][username]: {{m2_username}}
 elements[1][role]: adler_manager
 
 HTTP 200
+[Captures]
+m1_category_id: jsonpath "$.data[0].category_id"
 
 # {"data":[{"username":"m1-8f3206a5-3969-42a0-94a4-0102779f23f9","role":"adler_manager","category_path":null,"category_id":4},{"username":"m2-d579316a-d1db-4ae8-a03a-189fce37bb78","role":"adler_manager","category_path":null,"category_id":5}]}
 
@@ -174,14 +181,14 @@ Content-Type: application/x-www-form-urlencoded
 wsfunction: enrol_manual_enrol_users
 moodlewsrestformat: json
 wstoken: {{moodleAdminToken}}
-enrolments[0][roleid]: 5  # student role
+enrolments[0][roleid]: 5  # student role, there is no api endpoint to convert role name to id
 enrolments[0][userid]: {{s1_id}}
 enrolments[0][courseid]: {{course_c1_id}}
 HTTP 200
 [Asserts]
 jsonpath "$.exception" not exists
 
-# Get module id of one learning element in course c1
+# Get module id of one learning element and the adaptivity element in course c1
 POST {{host}}/webservice/rest/server.php
 Content-Type: application/x-www-form-urlencoded
 [FormParams]
@@ -191,10 +198,13 @@ wstoken: {{moodleS1Token}}
 elements[0][course_id]: {{course_c1_id}}
 elements[0][element_type]: cm
 elements[0][uuid]: {{c1_cm_uuid}}
+elements[1][course_id]: {{course_c1_id}}
+elements[1][element_type]: cm
+elements[1][uuid]: {{c1_adaptivity_uuid}}
 HTTP 200
 [Captures]
 c1_cm_id: jsonpath "$.data[0].moodle_id"
-
+c1_adaptivity_id: jsonpath "$.data[1].moodle_id"
 
 # complete learning element as s1 to have progress in the course
 POST {{host}}/webservice/rest/server.php

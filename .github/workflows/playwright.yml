@@ -9,6 +9,34 @@ on:
   workflow_call:
 
 jobs:
+  test-hurl:
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Remove existing Docker containers and volumes
+        run: docker compose down -v
+
+      - name: Start Docker services
+        run: docker compose up -d --wait --timeout 600 --pull always
+
+      - name: Install hurl
+        run: |
+          curl --location --remote-name https://github.com/Orange-OpenSource/hurl/releases/download/6.0.0/hurl_6.0.0_amd64.deb
+          sudo dpkg -i hurl_6.0.0_amd64.deb
+
+      - name: run hurl tests
+        run: |
+          for file in tests/*.hurl; do 
+            cat setup_test_environment/setup.hurl "$file" | hurl --variables-file envrionments/env_localhost_adler_stack.env --report-html report || exit 1
+          done
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: hurl-report-moodle
+          path: moodle/report/
+          retention-days: 30
+
   test-playwright:
     timeout-minutes: 60
     runs-on: ${{ matrix.runner }}
