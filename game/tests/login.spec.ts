@@ -7,6 +7,9 @@ test.beforeAll(async ({ resetEnvironment }) => {
 
 test('test', async ({page}) => {
     await page.goto('/');
+
+    await page.getByTestId("cookieAcceptAll").click();
+
     await page.getByTestId('userName').click();
     await page.getByTestId('userName').fill(process.env._PLAYWRIGHT_USER_STUDENT_USERNAME!);
     await page.getByTestId('userName').press('Tab');

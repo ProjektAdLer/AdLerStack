@@ -176,6 +176,11 @@ test.describe.serial("Complete a Learning World", () => {
             });
         });
 
+        test("Accept cookie banner", async () => {
+            await sharedPage.goto(`http://${process.env._URL_3D}/`);
+            await sharedPage.getByTestId("cookieAcceptAll").click();
+        });
+
         test("login to the application", async () => {
             await sharedPage.goto(`http://${process.env._URL_3D}/`);
             await sharedPage.setViewportSize({width: 1920, height: 1080});
