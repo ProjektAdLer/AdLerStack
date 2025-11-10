@@ -1,4 +1,3 @@
-
 import {expect} from '@playwright/test';
 import {enrollInMoodleCourse} from "./libs/moodle_helpers";
 import {test} from "./libs/enhanced_test";
