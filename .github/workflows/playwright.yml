@@ -27,6 +27,7 @@ jobs:
 
       - name: run hurl tests
         run: |
+          cd moodle
           for file in tests/*.hurl; do 
             cat setup_test_environment/setup.hurl "$file" | hurl --variables-file envrionments/env_localhost_adler_stack.env --report-html report || exit 1
           done
