@@ -14,16 +14,16 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
+      - name: Install hurl
+        run: |
+          curl --location --remote-name https://github.com/Orange-OpenSource/hurl/releases/download/7.0.0/hurl_7.0.0_amd64.deb
+          sudo dpkg -i ./hurl_7.0.0_amd64.deb
+
       - name: Remove existing Docker containers and volumes
         run: docker compose down -v
 
       - name: Start Docker services
         run: docker compose up -d --wait --timeout 600 --pull always
-
-      - name: Install hurl
-        run: |
-          curl --location --remote-name https://github.com/Orange-OpenSource/hurl/releases/download/6.0.0/hurl_6.0.0_amd64.deb
-          sudo dpkg -i hurl_6.0.0_amd64.deb
 
       - name: run hurl tests
         run: |
@@ -65,14 +65,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
       - name: Remove existing Docker containers and volumes
         run: docker compose down -v
 
       - name: Start Docker services
-        run: docker compose up -d --wait --timeout 600 --pull always --build
+        run: docker compose up -d --wait --timeout 600 --pull always
 
       - name: Take Volume snapshots (for later environment resets)
         run: ./docker-volumes-snapshot.sh snapshot
