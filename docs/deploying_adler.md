@@ -46,7 +46,7 @@ Our secrets are not stored in the `.env` file.
 ### Updating
 Do not update anything in the docker-compose.yml, like an image version, manually!
 
-To update your environment get a newer version of the `docker-compose.yml`. All potential changes you are required to make
+To update your environment [get a newer version of the `docker-compose.yml`](https://github.com/ProjektAdLer/AdLerStack/releases). All potential changes you are required to make
 to your deployment will be listed in the changelog. The releases follow semantic versioning. Note that any breaking change
 in either the deployment or in the services (which will not result in changes in the deployment configuration) will
 increase the major version number.
