@@ -1,0 +1,45 @@
+@startuml
+!define EXTERNAL_DEPENDENCY #A9A9A9
+
+skinparam backgroundcolor #FFFFFF80
+
+package "AdLer Stack" as AdLerStack {
+    component "AdLerStack" as DockerCompose
+    component "E2E & Integration Tests" as Tests
+    
+    component "2D_3D_AdLer" as AdLer2D3D
+    component "AdLerBackend" as Backend
+    component "AdLerLMS" as LMS 
+    component "Autorentool" as Autorentool
+    component "Databases" as DB EXTERNAL_DEPENDENCY
+    
+    component "local_adler" as PluginAdler
+    component "mod_adleradaptivity" as PluginAdaptivity
+    component "availability_adler" as PluginAvailability
+    component "local_logging" as PluginLogging
+    component "local_declarativesetup" as PluginSetup
+    component "playbook_adler" as PluginPlaybook
+    component "Bitnami Moodle" as Moodle EXTERNAL_DEPENDENCY
+    
+    LMS -down-> Moodle
+    LMS -down-> PluginAdler
+    LMS -down-> PluginAdaptivity
+    LMS -down-> PluginAvailability
+    LMS -down-> PluginLogging
+    LMS -down-> PluginSetup
+    LMS -down-> PluginPlaybook
+    
+    Tests .left.> DockerCompose : validates
+    
+    DockerCompose --> AdLer2D3D : orchestrates
+    DockerCompose --> Backend : orchestrates
+    DockerCompose --> Autorentool : orchestrates
+    DockerCompose --> DB : orchestrates
+    
+
+    
+    DockerCompose -down-> LMS : orchestrates
+}
+
+
+@enduml

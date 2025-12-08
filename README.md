@@ -8,3 +8,9 @@ This project contains the automated integration and end-to-end tests for the Adl
 - [Writing Tests](docs/writing_tests.md)
 - [Deploying AdLer](docs/deploying_adler.md)
 
+
+## Deployment structure
+
+The following diagram shows how the AdLer stack is composed from its services and external dependencies.
+
+![Project structure](project-structure.png)
